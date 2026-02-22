@@ -2,6 +2,7 @@ from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from .serializers import UserRegistrationSerializer, UserSerializer
 
@@ -25,9 +26,16 @@ class UserViewSet(viewsets.GenericViewSet):
     def register(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        user = serializer.save()
+
+        refresh = RefreshToken.for_user(user)
+        
         return Response(
-            {"message": "User registered successfully."},
+            {
+                "user": UserSerializer(user).data,
+                "refresh": str(refresh),
+                "aaccess": str(refresh.access_token),
+            },
             status=status.HTTP_201_CREATED,
         )
 
