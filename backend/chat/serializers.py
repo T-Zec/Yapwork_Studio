@@ -1,0 +1,21 @@
+from rest_framework import serializers
+from .models import Message
+
+
+class MessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = (
+            "id",
+            "channel",
+            "sender",
+            "content",
+            "created_at",
+            "updated_at",
+        )
+        read_only_fields = (
+            "sender",
+            "channel",
+            "created_at",
+            "updated_at",
+        )

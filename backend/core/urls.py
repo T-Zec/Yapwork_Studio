@@ -28,6 +28,7 @@ urlpatterns = [
     path("api/users/", include("users.urls")),
     path("api/workspaces/", include("workspaces.urls")),
     path("", include("channels.urls")),
+    path("", include("chat.urls")),
 
     # JWT
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
