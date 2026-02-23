@@ -14,7 +14,12 @@ class Message(models.Model):
         on_delete=models.CASCADE,
         related_name="sent_messages"
     )
-    content = models.TextField()
+    content = models.TextField(blank=True)
+    attachment = models.FileField(
+        upload_to="message_attachments/",
+        null=True,
+        blank=True
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
