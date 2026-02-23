@@ -44,6 +44,11 @@ class MessageViewSet(viewsets.ModelViewSet):
             sender=self.request.user
         )
 
+    def perform_update(self, serializer):
+        if serializer.instance.sender != self.request.user:
+            raise PermissionDenied("You can only edit your own messages.")
+        serializer.save()
+
     def perform_destroy(self, instance):
         if instance.sender != self.request.user:
             raise PermissionDenied("You can only delete your own messages.")

@@ -3,11 +3,13 @@ from .views import MessageViewSet
 
 message_list = MessageViewSet.as_view({
     "get": "list",
-    "post": "create"
+    "post": "create",
 })
 
 message_detail = MessageViewSet.as_view({
-    "delete": "destroy"
+    "patch": "partial_update",
+    "put": "update",
+    "delete": "destroy",
 })
 
 urlpatterns = [
