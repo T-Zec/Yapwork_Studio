@@ -25,3 +25,6 @@ class Message(models.Model):
 
     def __str__(self):
         return f"{self.sender} in {self.channel}"
+    
+    class Meta:
+        ordering = ["-created_at"]
