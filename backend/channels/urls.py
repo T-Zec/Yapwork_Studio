@@ -7,6 +7,8 @@ channel_list = ChannelViewSet.as_view({
 })
 
 channel_detail = ChannelViewSet.as_view({
+    "patch": "partial_update",
+    "put": "update",
     "delete": "destroy",
 })
 

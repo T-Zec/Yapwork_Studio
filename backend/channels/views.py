@@ -37,3 +37,30 @@ class ChannelViewSet(viewsets.ModelViewSet):
             workspace=workspace,
             created_by=self.request.user
         )
+
+    def perform_update(self, serializer):
+        workspace_id = self.kwargs.get("workspace_id")
+
+        is_member = WorkspaceMember.objects.filter(
+            workspace_id=workspace_id,
+            user=self.request.user
+        ).exists()
+
+        if not is_member:
+            raise PermissionDenied("You are not a member of this workspace.")
+        
+        serializer.save()
+
+    def destroy(self, request, *args, **kwargs):
+        workspace_id = self.kwargs.get("workspace_id")
+
+        is_owner = WorkspaceMember.objects.filter(
+            workspace_id=workspace_id,
+            user=request.user,
+            role="OWNER"
+        ).exists()
+
+        if not is_owner:
+            raise PermissionDenied("Only workspace owner can delete channels.")
+        
+        return super().destroy(request, *args, **kwargs)

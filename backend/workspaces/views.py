@@ -23,6 +23,14 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
             role="OWNER"
         )
 
+    def perform_update(self, request, serializer):
+        workspace = self.get_object()
+
+        if not IsWorkspaceOwner().has_object_permission(request, self, workspace):
+            return Response({"error": "Only owner can update workspace."}, status=403)
+        
+        serializer.save()
+
     def destroy(self, request, *args, **kwargs):
         workspace = self.get_object()
 
