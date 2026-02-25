@@ -1,6 +1,7 @@
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.exceptions import PermissionDenied
 
 from .models import Workspace, WorkspaceMember
 from .serializers import WorkspaceSerializer, WorkspaceMemberSerializer
@@ -23,12 +24,18 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
             role="OWNER"
         )
 
-    def perform_update(self, request, serializer):
+    def perform_update(self, serializer):
         workspace = self.get_object()
 
-        if not IsWorkspaceOwner().has_object_permission(request, self, workspace):
-            return Response({"error": "Only owner can update workspace."}, status=403)
-        
+        is_owner = WorkspaceMember.objects.filter(
+            workspace=workspace,
+            user=self.request.user,
+            role="OWNER"
+        ).exists()
+
+        if not is_owner:
+            raise PermissionDenied("Only owner can edit workspace.")
+
         serializer.save()
 
     def destroy(self, request, *args, **kwargs):
