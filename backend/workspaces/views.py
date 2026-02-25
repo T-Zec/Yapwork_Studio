@@ -1,11 +1,12 @@
 from rest_framework import viewsets, permissions, status
-from rest_framework.response import Response
-from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 
+from rest_framework.response import Response
+from rest_framework.decorators import action
+
 from .models import Workspace, WorkspaceMember
-from .serializers import WorkspaceSerializer, WorkspaceMemberSerializer
-from .permissions import IsWorkspaceOwner
+from .serializers import WorkspaceSerializer
+from .permissions import IsWorkspaceOwner, IsWorkspaceMember
 
 
 class WorkspaceViewSet(viewsets.ModelViewSet):
@@ -13,7 +14,21 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return Workspace.objects.filter(members__user=self.request.user)
+        return Workspace.objects.filter(members__user=self.request.user).distinct()
+    
+    def get_permissions(self):
+        if self.action in ["update", "partial_update", "destroy"]:
+            return [permissions.IsAuthenticated(), IsWorkspaceOwner()]
+        return [permissions.IsAuthenticated()]
+    
+    def check_object_permissions(self, request, obj):
+        if not WorkspaceMember.objects.filter(
+            workspace=obj,
+            user=request.user
+        ).exists():
+            raise PermissionDenied("You are not a member of this workspace.")
+        
+        super().check_object_permissions(request, obj)
 
     def perform_create(self, serializer):
         workspace = serializer.save(created_by=self.request.user)
@@ -74,6 +89,9 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
             return Response({"error": "Only owner can remove members."}, status=403)
 
         user_id = request.data.get("user_id")
+        
+        if not user_id:
+            return Response({"error": "User ID required."}, status=400)
 
         WorkspaceMember.objects.filter(
             workspace=workspace,

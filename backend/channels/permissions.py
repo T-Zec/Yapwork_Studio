@@ -1,19 +1,19 @@
 from rest_framework import permissions
-from .models import WorkspaceMember
+from workspaces.models import WorkspaceMember
 
 
-class IsWorkspaceMember(permissions.BasePermission):
+class IsChannelWorkspaceMember(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         return WorkspaceMember.objects.filter(
-            workspace=obj,
-            user=request.user,
+            workspace=obj.workspace,
+            user=request.user
         ).exists()
+    
 
-
-class IsWorkspaceOwner(permissions.BasePermission):
+class IsChannelWorkspaceOwner(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         return WorkspaceMember.objects.filter(
-            workspace=obj,
+            workspace=obj.workspace,
             user=request.user,
             role="OWNER"
         ).exists()
