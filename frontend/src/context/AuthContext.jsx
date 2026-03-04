@@ -49,7 +49,6 @@ export const AuthProvider = ({ children }) => {
         hasInitialized.current = true;
         
         const initializeAuth = async () => {
-            console.log("Initializing auth...");
             const refreshToken = getRefreshToken();
 
             if (!refreshToken) {

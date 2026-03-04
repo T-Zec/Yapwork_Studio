@@ -1,9 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
+import DashboardLayout from "../layouts/DashboardLayout";
+import WorkspaceList from "../pages/workspace/WorkspaceList";
 
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
-import Dashboard from "../pages/dashboard/DashboardHome";
 import Profile from "../pages/Profile";
 import NotFound from "../pages/NotFound";
 
@@ -19,7 +20,9 @@ export default function AppRoutes() {
 
                 {/* Protected Routes */}
                 <Route element={<ProtectedRoute />}>
-                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route element={<DashboardLayout />}>
+                        <Route path="/dashboard" element={<WorkspaceList />} />
+                    </Route>
                     <Route path="/profile" element={<Profile />} />
                 </Route>
 
