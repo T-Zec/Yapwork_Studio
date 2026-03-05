@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
-import WorkspaceList from "../pages/workspace/WorkspaceList";
+import WorkspaceHome from "../pages/workspace/WorkspaceHome";
 
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
@@ -21,7 +21,7 @@ export default function AppRoutes() {
                 {/* Protected Routes */}
                 <Route element={<ProtectedRoute />}>
                     <Route element={<DashboardLayout />}>
-                        <Route path="/dashboard" element={<WorkspaceList />} />
+                        <Route path="/dashboard" element={<WorkspaceHome />} />
                     </Route>
                     <Route path="/profile" element={<Profile />} />
                 </Route>

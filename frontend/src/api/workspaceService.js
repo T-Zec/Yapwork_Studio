@@ -14,7 +14,7 @@ export const createWorkspace = async (data) => {
 };
 
 export const updateWorkspace = async (id, data) => {
-    const response = await axiosInstance.patch(`/workspaces/${id}`, data);
+    const response = await axiosInstance.patch(`/workspaces/${id}/`, data);
     return response.data;
 };
 

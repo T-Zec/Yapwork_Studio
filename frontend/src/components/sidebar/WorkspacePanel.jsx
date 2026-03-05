@@ -1,4 +1,5 @@
 import { useWorkspace } from "../../context/WorkspaceContext";
+import ChannelList from "./ChannelList";
 
 const WorkspacePanel = () => {
     const { activeWorkspace } = useWorkspace();
@@ -17,9 +18,8 @@ const WorkspacePanel = () => {
                 {activeWorkspace.name}
             </h2>
 
-            <p className="text-sm opacity-70">
-                Channels appear here
-            </p>
+            <ChannelList />
+            
         </div>
     );
 };
