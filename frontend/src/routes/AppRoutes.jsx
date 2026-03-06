@@ -7,6 +7,7 @@ import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import Profile from "../pages/Profile";
 import NotFound from "../pages/NotFound";
+import ChatPage from "../pages/chat/ChatPage";
 
 export default function AppRoutes() {
     return (
@@ -21,7 +22,10 @@ export default function AppRoutes() {
                 {/* Protected Routes */}
                 <Route element={<ProtectedRoute />}>
                     <Route element={<DashboardLayout />}>
+
                         <Route path="/dashboard" element={<WorkspaceHome />} />
+                        <Route path="/workspaces/:workspaceId/channels/:channelId" element={<ChatPage />} />
+
                     </Route>
                     <Route path="/profile" element={<Profile />} />
                 </Route>

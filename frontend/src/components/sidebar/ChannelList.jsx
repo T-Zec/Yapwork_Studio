@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useWorkspace } from "../../context/WorkspaceContext";
 import { fetchChannels } from "../../api/channelService";
+import { useNavigate } from "react-router-dom";
 
 const ChannelList = () => {
     const { activeWorkspace } = useWorkspace();
     const [channels, setChannels] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (!activeWorkspace) return;
@@ -22,6 +24,10 @@ const ChannelList = () => {
 
     if (!activeWorkspace) return null;
 
+    const openChannel = (channelId) => {
+        navigate(`/workspaces/${activeWorkspace.id}/channels/${channelId}/`);
+    };
+
     return (
         <div>
             <h3 className="text-xs uppercase text-gray-400 mb-2">Channels</h3>
@@ -30,6 +36,7 @@ const ChannelList = () => {
                 {channels.map((channel) => (
                     <div
                         key={channel.id}
+                        onClick={() => openChannel(channel.id)}
                         className="text-sm px-2 py-1 rounded hover:bg-gray-700 cursor-pointer"
                     >
                         # {channel.name}
