@@ -9,11 +9,7 @@ const ChatPage = () => {
     const { channelId } = useParams();
     const { activeWorkspace } = useWorkspace();
     
-    const [refresh, setRefresh] = useState(false);
-
-    const refreshMessages = () => {
-        setRefresh(!refresh);
-    };
+    const [messages, setMessages] = useState([]);
 
     return (
         <div className="flex flex-col h-full">
@@ -32,11 +28,16 @@ const ChatPage = () => {
             </div> */}
 
             <div className="flex-1 overflow-y-auto">
-                <MessageList key={refresh} />
+                <MessageList 
+                    messages={messages}
+                    setMessages={setMessages}
+                />
             </div>
 
             <div className="border-t pt-3">
-                <MessageInput onMessageSent={refreshMessages} />
+                <MessageInput
+                    setMessages={setMessages}
+                />
             </div>
         </div>
     );

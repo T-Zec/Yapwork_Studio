@@ -2,16 +2,13 @@ import { useEffect, useState, useRef } from "react";
 import { fetchMessages } from "../../api/messageService";
 import { useParams } from "react-router-dom";
 
-const MessageList = () => {
+const MessageList = ({ messages, setMessages }) => {
     const { workspaceId, channelId } = useParams();
-
-    const [messages, setMessages] = useState([]);
-    const [page, setPage] = useState(1);
-    const [nextPage, setNextPage] = useState(null);
-
     const bottomRef = useRef(null);
     const containerRef = useRef(null);
-
+    
+    const [page, setPage] = useState(1);
+    const [nextPage, setNextPage] = useState(null);
 
     const handleScroll = () => {
         const container = containerRef.current;
@@ -28,12 +25,13 @@ const MessageList = () => {
     const loadMessages = async (pageNumber = 1) => {
         try {
             const data = await fetchMessages(workspaceId, channelId, pageNumber);
+            const ordered = [...data.results].reverse();
 
             if (pageNumber === 1) {
-                setMessages([...data.results].reverse());
+                setMessages(ordered);
             } else {
                 setMessages((prev) => [
-                    ...[...data.results].reverse(),
+                    ...ordered,
                     ...prev
                 ]);
             }
@@ -43,16 +41,7 @@ const MessageList = () => {
             console.error("Failed to load messages", error);
         }
     };
-
-    useEffect(() => {
-        setPage(1);
-        loadMessages(1);
-    }, [workspaceId, channelId]);
-
-    useEffect(() => {
-        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [messages]);
-
+    
     const loadOlderMessages = () => {
         if (!nextPage) return;
 
@@ -60,6 +49,16 @@ const MessageList = () => {
         setPage(next);
         loadMessages(next);
     };
+
+    useEffect(() => {
+        setPage(1);
+        loadMessages(1);
+    }, [workspaceId, channelId]);
+
+    useEffect(() => {
+        bottomRef.current?.scrollIntoView();
+    }, [messages]);
+
 
     // useEffect(() => {
     //     const loadMessages = async () => {

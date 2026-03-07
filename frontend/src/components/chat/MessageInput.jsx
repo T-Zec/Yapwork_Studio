@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { sendMessage } from "../../api/messageService";
 
-const MessageInput = ({ onMessageSent }) => {
+const MessageInput = ({ setMessages }) => {
     const { workspaceId, channelId } = useParams();
     const [text, setText] = useState("");
 
@@ -12,12 +12,14 @@ const MessageInput = ({ onMessageSent }) => {
         if (!text.trim()) return;
 
         try {
-            await sendMessage(workspaceId, channelId, {
-                content: text,
-            });
+            
+            const newMessage = await sendMessage(
+                workspaceId, 
+                channelId, 
+                { content: text, }
+            );
+            setMessages((prev) => [...prev, newMessage]);
             setText("");
-
-            if (onMessageSent) onMessageSent();
             
         } catch (error) {
             console.error("Failed to send message", error);
