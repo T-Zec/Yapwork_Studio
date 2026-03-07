@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { fetchMessages } from "../../api/messageService";
 import { useParams } from "react-router-dom";
 
@@ -9,14 +9,33 @@ const MessageList = () => {
     const [page, setPage] = useState(1);
     const [nextPage, setNextPage] = useState(null);
 
+    const bottomRef = useRef(null);
+    const containerRef = useRef(null);
+
+
+    const handleScroll = () => {
+        const container = containerRef.current;
+
+        if (!container) return;
+
+        if (container.scrollTop === 0 && nextPage) {
+            const next = page + 1;
+            setPage(next);
+            loadMessages(next);
+        }
+    };
+    
     const loadMessages = async (pageNumber = 1) => {
         try {
             const data = await fetchMessages(workspaceId, channelId, pageNumber);
 
             if (pageNumber === 1) {
-                setMessages(data.results);
+                setMessages([...data.results].reverse());
             } else {
-                setMessages((prev) => [...data.results, ...prev]);
+                setMessages((prev) => [
+                    ...[...data.results].reverse(),
+                    ...prev
+                ]);
             }
 
             setNextPage(data.next);
@@ -29,6 +48,10 @@ const MessageList = () => {
         setPage(1);
         loadMessages(1);
     }, [workspaceId, channelId]);
+
+    useEffect(() => {
+        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
 
     const loadOlderMessages = () => {
         if (!nextPage) return;
@@ -51,7 +74,10 @@ const MessageList = () => {
     // }, [workspaceId, channelId]);
 
     return (
-        <div className="flex flex-col gap-3 p-2">
+        <div
+            ref={containerRef} 
+            onScroll={handleScroll}
+            className="flex flex-col gap-3 p-2 overflow-y-auto h-full">
 
             {nextPage && (
                 <button
@@ -72,6 +98,8 @@ const MessageList = () => {
                     <span className="text-gray-700">
                         {msg.content}
                     </span>
+                    
+                    <div ref={bottomRef}></div>
 
                 </div>
             ))}

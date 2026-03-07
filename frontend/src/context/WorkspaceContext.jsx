@@ -5,6 +5,7 @@ const WorkspaceContext = createContext();
 
 export const WorkspaceProvider = ({ children }) => {
     const [workspaces, setWorkspaces] = useState([]);
+    const [channels, setChannels] = useState([]);
     const [activeWorkspace, setActiveWorkspace] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -37,6 +38,8 @@ export const WorkspaceProvider = ({ children }) => {
             value={{
                 workspaces,
                 activeWorkspace,
+                channels,
+                setChannels,
                 switchWorkspace,
                 reloadWorkspaces: loadWorkspaces,
                 loading,
