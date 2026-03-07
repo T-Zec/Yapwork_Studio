@@ -8,6 +8,7 @@ import { useState } from "react";
 const ChatPage = () => {
     const { channelId } = useParams();
     const { activeWorkspace } = useWorkspace();
+    
     const [refresh, setRefresh] = useState(false);
 
     const refreshMessages = () => {
@@ -20,7 +21,7 @@ const ChatPage = () => {
             <Breadcrumb
                 items={[
                     activeWorkspace?.name,
-                    `Channel ${channelId}`
+                    `#${channelId}`
                 ]}
             />
 

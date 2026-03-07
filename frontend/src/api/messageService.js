@@ -1,8 +1,8 @@
 import axiosInstance from "./axios";
 
-export const fetchMessages = async (workspaceId, channelId) => {
-    const response = await axiosInstance.get(`/workspaces/${workspaceId}/channels/${channelId}/messages/`);
-    return response.data.results || response.data;
+export const fetchMessages = async (workspaceId, channelId, page = 1) => {
+    const response = await axiosInstance.get(`/workspaces/${workspaceId}/channels/${channelId}/messages/?page=${page}`);
+    return response.data;
 };
 
 export const sendMessage = async (workspaceId, channelId, data) => {
