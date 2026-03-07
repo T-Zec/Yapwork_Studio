@@ -2,6 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import { fetchMessages } from "../../api/messageService";
 import { useParams } from "react-router-dom";
 
+import MessageItem from "../../components/chat/MessageItem";
+
 const MessageList = ({ messages, setMessages }) => {
     const { workspaceId, channelId } = useParams();
     const bottomRef = useRef(null);
@@ -88,19 +90,11 @@ const MessageList = ({ messages, setMessages }) => {
             )}
 
             {messages.map((msg) => (
-                <div key={msg.id} className="flex flex-col">
-
-                    <span className="text-sm font-semibold">
-                        {msg.sender.username || "User"}
-                    </span>
-
-                    <span className="text-gray-700">
-                        {msg.content}
-                    </span>
-                    
-                    <div ref={bottomRef}></div>
-
-                </div>
+                <MessageItem 
+                    key={msg.id}
+                    message={msg}
+                    setMessages={setMessages}
+                />
             ))}
         </div>
     );

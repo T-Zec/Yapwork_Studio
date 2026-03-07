@@ -15,6 +15,6 @@ export const editMessage = async (workspaceId, channelId, messageId, data) => {
     return response.data;
 };
 
-export const deleteMessage = async (workspaceId, channelId, messageId) => {
+export const deleteMessage = async (workspaceId, channelId, messageId) => { 
     await axiosInstance.delete(`/workspaces/${workspaceId}/channels/${channelId}/messages/${messageId}/`);
 };
