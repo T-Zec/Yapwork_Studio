@@ -1,8 +1,11 @@
 from rest_framework import serializers
 from .models import Message
+from users.serializers import UserSerializer
 
 
 class MessageSerializer(serializers.ModelSerializer):
+    sender = UserSerializer(read_only=True)
+    
     def validate(self, attrs):
         content = attrs.get("content")
         attachment = attrs.get("attachment")

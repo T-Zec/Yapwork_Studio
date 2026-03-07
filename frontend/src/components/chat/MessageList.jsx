@@ -91,7 +91,7 @@ const MessageList = ({ messages, setMessages }) => {
                 <div key={msg.id} className="flex flex-col">
 
                     <span className="text-sm font-semibold">
-                        {msg.sender?.username || "User"}
+                        {msg.sender.username || "User"}
                     </span>
 
                     <span className="text-gray-700">
