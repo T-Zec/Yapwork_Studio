@@ -1,15 +1,35 @@
 import { useParams } from "react-router-dom";
 import { useWorkspace } from "../../context/WorkspaceContext";
+import { useChannels } from "../../context/ChannelContext";
 import Breadcrumb from "../../components/navigation/Breadcrumb";
 import MessageList from "../../components/chat/MessageList";
 import MessageInput from "../../components/chat/MessageInput";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ChatPage = () => {
     const { channelId } = useParams();
     const { activeWorkspace } = useWorkspace();
+    const { channels } = useChannels();
     
     const [messages, setMessages] = useState([]);
+    const navigate = useNavigate();
+
+    const channel = channels.find(
+        (c) => c.id === Number(channelId)
+    );
+
+    useEffect(() => {
+        if (!activeWorkspace) return;
+
+        const channelExists = channels.some(
+            (c) => c.id === Number(channelId)
+        );
+
+        if (!channelExists) {
+            navigate("/dashboard");
+        }
+    }, [activeWorkspace, channels]);
 
     return (
         <div className="flex flex-col h-full">
@@ -17,7 +37,7 @@ const ChatPage = () => {
             <Breadcrumb
                 items={[
                     activeWorkspace?.name,
-                    `#${channelId}`
+                    `# ${channel?.name || "channel"}`
                 ]}
             />
 
