@@ -3,7 +3,7 @@ const Breadcrumb = ({ items = [] }) => {
         <div className="text-sm text-gray-500 mb-3">
 
             {items.map((item, index) => (
-                <span key={{index}}>
+                <span key={index}>
                     {item}
 
                     {index < items.length - 1 && (

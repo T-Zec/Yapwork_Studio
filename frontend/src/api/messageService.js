@@ -5,12 +5,12 @@ export const fetchMessages = async (workspaceId, channelId) => {
     return response.data.results || response.data;
 };
 
-export const createMessage = async (workspaceId, channelId, data) => {
+export const sendMessage = async (workspaceId, channelId, data) => {
     const response = await axiosInstance.post(`/workspaces/${workspaceId}/channels/${channelId}/messages/`, data);
     return response.data;
 };
 
-export const updateMessage = async (workspaceId, channelId, messageId, data) => {
+export const editMessage = async (workspaceId, channelId, messageId, data) => {
     const response = await axiosInstance.patch(`/workspaces/${workspaceId}/channels/${channelId}/messages/${messageId}/`, data);
     return response.data;
 };
