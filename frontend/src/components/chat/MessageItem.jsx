@@ -1,14 +1,16 @@
 import { useAuth } from "../../context/AuthContext";
+import { useParams } from "react-router-dom";
 import { deleteMessage } from "../../api/messageService";
 
 const MessageItem = ({ message, setMessages }) => {
     const { user } = useAuth();
+    const { workspaceId, channelId } = useParams();
 
     const handleDelete = async () => {
         try {
             await deleteMessage(
-                message.workspace,
-                message.channel,
+                workspaceId,
+                channelId,
                 message.id
             );
 
