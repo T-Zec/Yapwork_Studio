@@ -96,6 +96,8 @@ const MessageList = ({ messages, setMessages }) => {
                     setMessages={setMessages}
                 />
             ))}
+
+            <div ref={bottomRef}></div>
         </div>
     );
 };

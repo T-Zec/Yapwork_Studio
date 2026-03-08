@@ -1,10 +1,35 @@
+import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useParams } from "react-router-dom";
-import { deleteMessage } from "../../api/messageService";
+import { deleteMessage, editMessage } from "../../api/messageService";
 
 const MessageItem = ({ message, setMessages }) => {
     const { user } = useAuth();
     const { workspaceId, channelId } = useParams();
+
+    const [editing, setEditing] = useState(false);
+    const [text, setText] = useState(message.content);
+
+    const handleEdit = async () => {
+        try {
+            const updated = await editMessage(
+                workspaceId,
+                channelId,
+                message.id,
+                { content: text }
+            );
+
+            setMessages((prev) => 
+                prev.map((m) => 
+                    m.id === message.id ? updated : m
+                )
+            );
+
+            setEditing(false);
+        } catch (error) {
+            console.error("Failed to edit message", error);
+        }
+    };
 
     const handleDelete = async () => {
         try {
@@ -42,18 +67,62 @@ const MessageItem = ({ message, setMessages }) => {
                 </div>
 
                 <span className="text-sm">
-                    {message.content}
+                    {editing ? (
+                        <div className="flex gap-2 mt-1">
+                            <input
+                                value={text}
+                                onChange={(e) => setText(e.target.value)}
+                                autoFocus={true}
+                                onKeyDown={(event) => {
+                                    if (event.key === 'Enter') {
+                                        event.preventDefault();
+                                        handleEdit();
+                                    }
+                                }}
+                                className="border rounded px-2 py-1 text-sm flex-1"
+                            />
+
+                            <button 
+                                onClick={handleEdit}
+                                className="text-xs text-green-600"
+                            >
+                                save
+                            </button>
+
+                            <button
+                                onClick={() => setEditing(false)}
+                                className="text-xs text-gray-500"
+                            >
+                                cancel
+                            </button>
+                        </div>
+                    ) : (
+                        <span className="text-sm">
+                            {message.content}
+                        </span>
+                    )}
                 </span>
 
             </div>
 
-            {isOwner && (
-                <button
-                    onClick={handleDelete}
-                    className="opacity-0 group-hover:opacity-100 text-xs text-red-500"
-                >
-                    delete
-                </button>
+            {isOwner && !editing && (
+                <div className="flex gap-2 opacity-0 group-hover:opacity-100 text-xs">
+
+                    <button
+                        onClick={() => setEditing(true)}
+                        className="text-blue-500"
+                    >
+                        edit
+                    </button>
+
+                    <button
+                        onClick={handleDelete}
+                        className="text-red-500"
+                    >
+                        delete
+                    </button>
+
+                </div>
             )}
         </div>
     );
