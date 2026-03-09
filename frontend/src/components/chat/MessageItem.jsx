@@ -2,13 +2,16 @@ import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useParams } from "react-router-dom";
 import { deleteMessage, editMessage } from "../../api/messageService";
+import { formateTimestamp } from "../../utils/formatTime";
 
-const MessageItem = ({ message, setMessages }) => {
+const MessageItem = ({ message, previousMessage, setMessages }) => {
     const { user } = useAuth();
     const { workspaceId, channelId } = useParams();
 
     const [editing, setEditing] = useState(false);
     const [text, setText] = useState(message.content);
+
+    const sameUser = previousMessage && previousMessage.sender?.id === message.sender?.id;
 
     const handleEdit = async () => {
         try {
@@ -50,21 +53,29 @@ const MessageItem = ({ message, setMessages }) => {
     const isOwner = user?.id === message.sender?.id;
 
     return (
-        <div className="group flex gap-3 hover:bg-gray-100 p-2 rounded">
-            <div className="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center text-white text-xs">
-                {message.sender?.username?.charAt(0).toUpperCase()}
+        <div className={`group flex gap-3 hover:bg-gray-100 rounded ${sameUser ? "py-1" : "py-2"}`}>
+            
+            <div className="w-8 h-8 flex items-center justify-center">
+                {!sameUser && (
+                    <div className="w-8 h-8 rounded-full bg-gray-400 flex items-center justify-center text-white text-xs">
+                        {message.sender?.username?.charAt(0).toUpperCase()}
+                    </div>
+                )}
             </div>
-
+            
             <div className="flex flex-col flex-1">
-                <div className="flex items-center gap-2">
-                    <span className="font-semibold text-sm">
-                        {message.sender?.username}
-                    </span>
 
-                    <span className="text-xs text-gray-400">
-                        {new Date(message.created_at).toLocaleDateString()}
-                    </span>
-                </div>
+                {!sameUser && (
+                    <div className="flex items-center gap-2">
+                        <span className="font-semibold text-sm">
+                            {message.sender?.username}
+                        </span>
+
+                        <span className="text-xs text-gray-400">
+                            {formateTimestamp(message.created_at)}
+                        </span>
+                    </div>
+                )}
 
                 <span className="text-sm">
                     {editing ? (
@@ -77,6 +88,8 @@ const MessageItem = ({ message, setMessages }) => {
                                     if (event.key === 'Enter') {
                                         event.preventDefault();
                                         handleEdit();
+                                    } else if (event.key === 'Escape') {
+                                        setEditing(false);
                                     }
                                 }}
                                 className="border rounded px-2 py-1 text-sm flex-1"
@@ -124,6 +137,7 @@ const MessageItem = ({ message, setMessages }) => {
 
                 </div>
             )}
+        
         </div>
     );
 };

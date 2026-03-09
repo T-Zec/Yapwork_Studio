@@ -89,13 +89,16 @@ const MessageList = ({ messages, setMessages }) => {
                 </button>
             )}
 
-            {messages.map((msg) => (
-                <MessageItem 
-                    key={msg.id}
-                    message={msg}
-                    setMessages={setMessages}
-                />
-            ))}
+            {messages.map((msg, index) => {
+                return (
+                    <MessageItem 
+                        key={msg.id}
+                        message={msg}
+                        previousMessage={messages[index - 1]}
+                        setMessages={setMessages}
+                    />
+                );
+            })}
 
             <div ref={bottomRef}></div>
         </div>

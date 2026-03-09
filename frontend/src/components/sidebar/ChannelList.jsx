@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useWorkspace } from "../../context/WorkspaceContext";
 import { fetchChannels } from "../../api/channelService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ChannelList = () => {
     const { activeWorkspace } = useWorkspace();
     const [channels, setChannels] = useState([]);
+    const { channelId } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -37,7 +38,12 @@ const ChannelList = () => {
                     <div
                         key={channel.id}
                         onClick={() => openChannel(channel.id)}
-                        className="text-sm px-2 py-1 rounded hover:bg-gray-700 cursor-pointer"
+                        className={`text-sm px-2 py-1 rounded cursor-pointer
+                            ${
+                                Number(channelId) === channel.id
+                                    ? "bg-gray-700" : "hover:bg-gray-700"
+                            }
+                        `}
                     >
                         # {channel.name}
                     </div>
