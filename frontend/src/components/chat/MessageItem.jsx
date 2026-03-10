@@ -114,6 +114,35 @@ const MessageItem = ({ message, previousMessage, setMessages }) => {
                             {message.content}
                         </span>
                     )}
+
+                    {message.attachment && (
+                        <div className="mt-2">
+                            
+                            {message.attachment.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
+                                <img
+                                    src={message.attachment}
+                                    alt="attachment"
+                                    className="max-w-xs rounded border"
+                                />
+                            ) : (
+                                <div className="border rounded-lg p-2 bg-gray-50 flex items-center justify-between max-w-xs">
+
+                                    <span className="text-sm truncate">
+                                        📎 {message.attachment.split("/").pop()}
+                                    </span>
+
+                                    <a
+                                        href={message.attachment}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-blue-500 text-xs underline"
+                                    >
+                                        Download
+                                    </a>
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </span>
 
             </div>

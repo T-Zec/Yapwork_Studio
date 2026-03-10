@@ -1,24 +1,37 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { sendMessage } from "../../api/messageService";
 
 const MessageInput = ({ setMessages }) => {
     const { workspaceId, channelId } = useParams();
-    const [text, setText] = useState("");
+    
+    const [content, setContent] = useState("");
+    const [file, setFile] = useState(null);
+
+    const fileInputRef = useRef(null);
 
     const handleSend = async (e) => {
         e.preventDefault();
 
-        if (!text.trim()) return;
+        if (!content.trim() && !file) return;
 
         try {
+            const formData = new FormData();
+
+            if (content) formData.append("content", content);
+            if (file) formData.append("attachment", file);
+
             const newMessage = await sendMessage(
                 workspaceId, 
                 channelId, 
-                { content: text, }
+                formData
             );
+
             setMessages((prev) => [...prev, newMessage]);
-            setText("");
+
+            setContent("");
+            setFile(null);
+            fileInputRef.current.value = "";
             
         } catch (error) {
             console.error("Failed to send message", error);
@@ -26,22 +39,61 @@ const MessageInput = ({ setMessages }) => {
     };
 
     return (
-        <form onSubmit={handleSend} className="flex gap-2">
+        <form 
+            onSubmit={handleSend} 
+            className="border-t p-2"
+        >
 
-            <input
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                placeholder="Type a message..."
-                className="flex-1 border rounded px-3 py-2"
-            />
+            {/* File Preview */}
+            {file && (
+                <div className="mt-2 text-xs text-gray-600 flex items-center gap-2">
+                    📎 {file.name}
+                    <button 
+                        type="button"
+                        onClick={() => {
+                            setFile(null);
+                            fileInputRef.current.value == "";
+                        }}
+                        className="text-red-500"
+                    >
+                        remove
+                    </button>
+                </div>
+            )}
+            
+            <div className="flex items-center gap-2 border rounded-lg px-3 py-2 bg-white">
 
-            <button
-                type="submit"
-                className="bg-blue-500 text-white px-4 rounded"
-            >
-                Send
-            </button>
+                {/* Attachment Button */}
+                <button
+                    type="button"
+                    onClick={() => fileInputRef.current.click()}
+                    className="text-gray-500 hover:text-blue-500 transition text-lg"
+                >
+                    +
+                </button>
+                
+                <input
+                    ref={fileInputRef}
+                    type="file"
+                    className="hidden"
+                    onChange={(e) => setFile(e.target.files[0])}
+                />
 
+                <input
+                    type="text"
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    placeholder="Send a message..."
+                    className="flex-1 outline-none text-sm"
+                />
+
+                <button
+                    type="submit"
+                    className="bg-blue-500 text-white font-semibold px-3 py-1 text-sm rounded"
+                >
+                    Send
+                </button>
+            </div>
         </form>
     );
 };
