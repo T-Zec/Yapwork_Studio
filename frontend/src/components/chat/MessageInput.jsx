@@ -12,7 +12,6 @@ const MessageInput = ({ setMessages }) => {
         if (!text.trim()) return;
 
         try {
-            
             const newMessage = await sendMessage(
                 workspaceId, 
                 channelId, 

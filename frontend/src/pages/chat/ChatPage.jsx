@@ -1,11 +1,10 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useWorkspace } from "../../context/WorkspaceContext";
 import { useChannels } from "../../context/ChannelContext";
 import Breadcrumb from "../../components/navigation/Breadcrumb";
 import MessageList from "../../components/chat/MessageList";
 import MessageInput from "../../components/chat/MessageInput";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 const ChatPage = () => {
     const { channelId } = useParams();

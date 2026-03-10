@@ -1,106 +1,116 @@
 import { useEffect, useState, useRef } from "react";
 import { fetchMessages } from "../../api/messageService";
 import { useParams } from "react-router-dom";
-
 import MessageItem from "../../components/chat/MessageItem";
 
 const MessageList = ({ messages, setMessages }) => {
     const { workspaceId, channelId } = useParams();
-    const bottomRef = useRef(null);
+
     const containerRef = useRef(null);
+    const bottomRef = useRef(null);
+
+    const initialLoadRef = useRef(true);
+    const loadingOlderRef = useRef(false);
     
     const [page, setPage] = useState(1);
-    const [nextPage, setNextPage] = useState(null);
-
-    const handleScroll = () => {
-        const container = containerRef.current;
-
-        if (!container) return;
-
-        if (container.scrollTop === 0 && nextPage) {
-            const next = page + 1;
-            setPage(next);
-            loadMessages(next);
-        }
-    };
+    const [hasNext, setHasNext] = useState(false);
+    const [loading, setLoading] = useState(false);
     
-    const loadMessages = async (pageNumber = 1) => {
+    const loadMessages = async (pageNumber = 1, prepend = false) => {
         try {
+            setLoading(true);
+
+            const container = containerRef.current;
+            const previousHeight = container?.scrollHeight || 0;
+
             const data = await fetchMessages(workspaceId, channelId, pageNumber);
             const ordered = [...data.results].reverse();
 
-            if (pageNumber === 1) {
-                setMessages(ordered);
+            if (prepend) {
+                setMessages((prev) => [...ordered, ...prev]);
             } else {
-                setMessages((prev) => [
-                    ...ordered,
-                    ...prev
-                ]);
+                setMessages(ordered);
             }
 
-            setNextPage(data.next);
+            setHasNext(Boolean(data.next));
+            setPage(pageNumber);
+
+            if (prepend && container) {
+                requestAnimationFrame(() => {
+                    const newHeight = container.scrollHeight;
+                    container.scrollTop = newHeight - previousHeight;
+                });
+            }
+
         } catch (error) {
             console.error("Failed to load messages", error);
+        } finally {
+            setLoading(false);
         }
     };
     
-    const loadOlderMessages = () => {
-        if (!nextPage) return;
+    const loadOlderMessages = async () => {
+        if (!hasNext || loading) return;
 
-        const next = page + 1;
-        setPage(next);
-        loadMessages(next);
+        loadingOlderRef.current = true;
+
+        await loadMessages(page + 1, true);
+    };
+
+    const handleScroll = () => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        if (container.scrollTop === 0 && hasNext && !loading) {
+            loadOlderMessages();
+        }
     };
 
     useEffect(() => {
-        setPage(1);
-        loadMessages(1);
+        initialLoadRef.current = true;
+        loadMessages(1, false);
     }, [workspaceId, channelId]);
 
     useEffect(() => {
-        bottomRef.current?.scrollIntoView();
+        if (initialLoadRef.current) {
+            bottomRef.current?.scrollIntoView();
+            initialLoadRef.current = false;
+            return;
+        }
+
+        if (!loadingOlderRef.current) {
+            bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+        }
+
+        loadingOlderRef.current = false;
+
     }, [messages]);
-
-
-    // useEffect(() => {
-    //     const loadMessages = async () => {
-    //         try {
-    //             const data = await fetchMessages(workspaceId, channelId);
-    //             setMessages(data);
-    //         } catch (error) {
-    //             console.error("Failed to load messages", error);
-    //         }
-    //     };
-    //     loadMessages();
-    // }, [workspaceId, channelId]);
 
     return (
         <div
             ref={containerRef} 
             onScroll={handleScroll}
-            className="flex flex-col gap-3 p-2 overflow-y-auto h-full">
+            className="flex flex-col gap-2 p-2 overflow-y-auto h-full">
 
-            {nextPage && (
+            {/* {hasNext && (
                 <button
                     onClick={loadOlderMessages}
                     className="text-xs text-blue-500"
                 >
                     Load older messages
                 </button>
-            )}
+            )} */}
 
-            {messages.map((msg, index) => {
-                return (
-                    <MessageItem 
-                        key={msg.id}
-                        message={msg}
-                        previousMessage={messages[index - 1]}
-                        setMessages={setMessages}
-                    />
-                );
-            })}
+            {messages.map((msg, index) => (
+                <MessageItem 
+                    key={msg.id}
+                    message={msg}
+                    previousMessage={messages[index - 1]}
+                    setMessages={setMessages}
+                />
+            ))}
 
-            <div ref={bottomRef}></div>
+            <div ref={bottomRef} />
         </div>
     );
 };
