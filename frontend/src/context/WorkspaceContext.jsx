@@ -40,6 +40,7 @@ export const WorkspaceProvider = ({ children }) => {
                 activeWorkspace,
                 channels,
                 setChannels,
+                setWorkspaces,
                 switchWorkspace,
                 reloadWorkspaces: loadWorkspaces,
                 loading,
