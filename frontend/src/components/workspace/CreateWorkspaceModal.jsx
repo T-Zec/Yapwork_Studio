@@ -29,8 +29,8 @@ const CreateWorkspaceModal = ({ open, onClose }) => {
     if (!open) return null;
 
     return (
-        <div className="fixed max-h-screen inset-0 bg-black/30 flex items-center justify-center">
-            <div className="bg-white text-gray-700 rounded-lg p-6 w-96">
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center">
+            <div className="bg-white text-gray-700 rounded-lg p-6 w-96 animate-[scaleIn_.15s_ease]">
                 <h2 className="text-lg font-semibold mb-4">Create Workspace</h2>
 
                 <form onSubmit={handleCreate} className="flex flex-col gap-3">

@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
 @layer utilities {
   .scrollbar-hidden::-webkit-scrollbar {
     display: none;
@@ -11,3 +16,13 @@
     scrollbar-width: none; /* Firefox */
   }
 }   
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  } to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
