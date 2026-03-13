@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { fetchWorkspaces } from "../api/workspaceService";
+import { useAuth } from "./AuthContext";
 
 const WorkspaceContext = createContext();
 
@@ -8,6 +9,7 @@ export const WorkspaceProvider = ({ children }) => {
     const [channels, setChannels] = useState([]);
     const [activeWorkspace, setActiveWorkspace] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { user } = useAuth();
 
     const loadWorkspaces = async () => {
         try {
@@ -26,7 +28,13 @@ export const WorkspaceProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        loadWorkspaces();
+        if (user) {
+            loadWorkspaces();
+        } else {
+            setWorkspaces([]);
+            setChannels([]);
+            setActiveWorkspace(null);
+        }
     }, []);
 
     const switchWorkspace = (workspace) => {
