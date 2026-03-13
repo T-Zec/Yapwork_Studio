@@ -28,14 +28,14 @@ export const WorkspaceProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        if (user) {
-            loadWorkspaces();
-        } else {
+        if (!user) {
             setWorkspaces([]);
             setChannels([]);
             setActiveWorkspace(null);
         }
-    }, []);
+
+        loadWorkspaces();
+    }, [user]);
 
     const switchWorkspace = (workspace) => {
         setActiveWorkspace(workspace);

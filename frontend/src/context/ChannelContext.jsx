@@ -11,7 +11,12 @@ export const ChannelProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (!activeWorkspace) return;
+        if (!activeWorkspace) {
+            if (!activeWorkspace) {
+                setChannels([]);
+                return;
+            }
+        }
 
         const loadChannels = async () => {
             try {

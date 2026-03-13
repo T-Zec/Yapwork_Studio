@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }) => {
             axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${data.access}`;
             
             const userData = await getCurrentUser();
+            setUser(null);
             setUser(userData);
 
         } catch (error) {
@@ -32,6 +33,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const register = async (formData) => {
+        setUser(null);
         await registerRequest(formData);
     };
 
