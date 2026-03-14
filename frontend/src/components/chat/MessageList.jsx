@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { fetchMessages } from "../../api/messageService";
 import { useParams } from "react-router-dom";
-import MessageItem from "../../components/chat/MessageItem";
+import MessageItem from "./MessageItem";
 
 const MessageList = ({ messages, setMessages }) => {
     const { workspaceId, channelId } = useParams();

@@ -1,0 +1,72 @@
+import { useState } from "react";
+import { createChannel } from "../../api/channelService";
+import { useWorkspace } from "../../context/WorkspaceContext";
+
+
+const CreateChannelModal = ({ open, onClose, reload }) => {
+    const { activeWorkspace } = useWorkspace();
+    const [name, setName] = useState("");
+
+    const handleCreate = async (e) => {
+        e.preventDefault();
+
+        if(!name.trim()) return;
+
+        try {
+            await createChannel(activeWorkspace.id, { name });
+
+            setName("");
+            reload();
+            onClose();
+
+        } catch (error) {
+            console.error("Couldn't create channel", error);
+        }
+    };
+
+    if (!open) return null;
+
+    return (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center">
+            <div className="bg-white text-gray-700 p-6 rounded-lg w-96">
+
+                <h2 className="font-semibold mb-3">
+                    Create Channel
+                </h2>
+
+                <form 
+                    onSubmit={handleCreate}
+                    className="space-y-3">
+
+                    <input 
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Channel name"
+                        className="border px-3 py-2 w-full rounded"
+                    />
+
+                    <div className="flex justify-end gap-2">
+
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="text-gray-500"
+                        >
+                            Cancel
+                        </button>
+
+                        <button
+                            type="submit"
+                            className="bg-blue-500 text-white px-3 py-1 rounded"
+                        >
+                            Create
+                        </button>
+                        
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+};
+
+export default CreateChannelModal;

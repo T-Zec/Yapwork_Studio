@@ -67,7 +67,7 @@ const MessageInput = ({ setMessages }) => {
                 <button
                     type="button"
                     onClick={() => fileInputRef.current.click()}
-                    className="text-gray-500 hover:text-blue-500 transition text-lg"
+                    className="w-8 h-8 text-gray-500 hover:text-blue-500 hover:bg-gray-200 transition text-lg rounded"
                 >
                     +
                 </button>
