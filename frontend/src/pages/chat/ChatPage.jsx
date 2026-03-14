@@ -40,12 +40,6 @@ const ChatPage = () => {
                 ]}
             />
 
-            {/* <div className="border-b pb-3 mb-3">
-                <h2 className="text-xl font-semibold">
-                    Channel Chat
-                </h2>
-            </div> */}
-
             <div className="flex-1 overflow-y-auto">
                 <MessageList 
                     messages={messages}

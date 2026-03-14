@@ -3,7 +3,7 @@ import { createChannel } from "../../api/channelService";
 import { useWorkspace } from "../../context/WorkspaceContext";
 
 
-const CreateChannelModal = ({ open, onClose, reload }) => {
+const CreateChannelModal = ({ open, onClose, reloadChannels }) => {
     const { activeWorkspace } = useWorkspace();
     const [name, setName] = useState("");
 
@@ -16,7 +16,7 @@ const CreateChannelModal = ({ open, onClose, reload }) => {
             await createChannel(activeWorkspace.id, { name });
 
             setName("");
-            reload();
+            reloadChannels();
             onClose();
 
         } catch (error) {

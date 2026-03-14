@@ -1,31 +1,21 @@
 import { useEffect, useState } from "react";
 import { useWorkspace } from "../../context/WorkspaceContext";
-import { fetchChannels } from "../../api/channelService";
+import { useChannels } from "../../context/ChannelContext";
 import { useNavigate, useParams } from "react-router-dom";
 import CreateChannelModal from "../chat/CreateChannelModal";
 
 const ChannelList = () => {
     const { activeWorkspace } = useWorkspace();
-    const [channels, setChannels] = useState([]);
+    const { channels, reloadChannels } = useChannels();
     const { channelId } = useParams();    
+    const [openModal, setOpenModal] = useState(false);
     
     const navigate = useNavigate();
-
-    const [openModal, setOpenModal] = useState(false);    
-
-    const loadChannels = async () => {
-        try {
-            const data = await fetchChannels(activeWorkspace.id);
-            setChannels(data);
-        } catch (error) {
-            console.error("Failed to load channels", error);
-        }
-    };
 
     useEffect(() => {
         if (!activeWorkspace) return;
         
-        loadChannels();
+        reloadChannels();
     }, [activeWorkspace]);
 
     if (!activeWorkspace) return null;
@@ -33,6 +23,7 @@ const ChannelList = () => {
     const openChannel = (channelId) => {
         navigate(`/workspaces/${activeWorkspace.id}/channels/${channelId}/`);
     };
+
 
     return (
         <div>
@@ -50,7 +41,7 @@ const ChannelList = () => {
                 <CreateChannelModal 
                     open={openModal}
                     onClose={() => setOpenModal(false)}
-                    reload={loadChannels}
+                    reloadChannels={reloadChannels}
                 />
 
                 {channels.map((channel) => (

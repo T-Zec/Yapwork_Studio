@@ -10,29 +10,35 @@ export const ChannelProvider = ({ children }) => {
     const [channels, setChannels] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    const loadChannels = async () => {
+        if (!activeWorkspace) return;
+        
+        try {
+            const data = await fetchChannels(activeWorkspace.id);
+            setChannels(data);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
         if (!activeWorkspace) {
-            if (!activeWorkspace) {
-                setChannels([]);
-                return;
-            }
+            setChannels([]);
+            return;
         }
-
-        const loadChannels = async () => {
-            try {
-                const data = await fetchChannels(activeWorkspace.id);
-                setChannels(data);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        };
+        
         loadChannels();
     }, [activeWorkspace]);
 
     return (
-        <ChannelContext.Provider value={{ channels, loading }}>
+        <ChannelContext.Provider 
+            value={{ 
+                channels, 
+                loading,
+                reloadChannels: loadChannels
+            }}>
             {children}
         </ChannelContext.Provider>
     );
