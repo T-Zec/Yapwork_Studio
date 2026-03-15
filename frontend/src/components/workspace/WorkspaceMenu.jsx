@@ -70,18 +70,18 @@ const WorkspaceMenu = ({ workspace }) => {
 
             {open && isOwner && (
                 <div
-                    className="absolute mt-2 bg-gray-800 border rounded shadows w-40">
+                    className="absolute mt-2 bg-gray-800 border text-sm rounded shadows-lg w-36">
 
                     <button
                         onClick={handleRename}
-                        className="block w-full text-left px-3 py-2 hover:bg-gray-900"
+                        className="block w-full text-left px-3 py-2 hover:bg-gray-700"
                     >
                         Rename
                     </button>
 
                     <button
                         onClick={handleDelete}
-                        className="block w-full text-left px-3 py-2 text-red-500 hover:bg-gray-900"
+                        className="block w-full text-left px-3 py-2 text-red-400 hover:bg-gray-700"
                     >
                         Delete
                     </button>

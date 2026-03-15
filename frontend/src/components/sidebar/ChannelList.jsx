@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useWorkspace } from "../../context/WorkspaceContext";
 import { useChannels } from "../../context/ChannelContext";
 import { useNavigate, useParams } from "react-router-dom";
-import CreateChannelModal from "../chat/CreateChannelModal";
+import CreateChannelModal from "../channel/CreateChannelModal";
+import ChannelMenu from "../channel/ChannelMenu";
 
 const ChannelList = () => {
     const { activeWorkspace } = useWorkspace();
@@ -45,18 +46,35 @@ const ChannelList = () => {
                 />
 
                 {channels.map((channel) => (
+
                     <div
                         key={channel.id}
                         onClick={() => openChannel(channel.id)}
-                        className={`text-sm px-2 py-1 rounded cursor-pointer
-                            ${
-                                Number(channelId) === channel.id
-                                    ? "bg-gray-700" : "hover:bg-gray-700"
-                            }
-                        `}
+                        className="group flex items-center justify-between px-2 py-1 rounded hover:bg-gray-700 cursor-pointer"
                     >
-                        # {channel.name}
+                        <span
+                            className={`text-sm
+                                ${
+                                    Number(channelId) === channel.id
+                                        ? "bg-gray-700" : "hover:bg-gray-700"
+                                }
+                            `}
+                        >
+                            # {channel.name}
+                        </span>
+                        
+                        <div
+                            onClick={(e) => e.stopPropagation()}
+                            className="opacity-0 group-hover:opacity-100"
+                        >
+                            <ChannelMenu 
+                                channel={channel} 
+                                reloadChannels={reloadChannels}
+                            />
+                        </div>
+
                     </div>
+                    
                 ))}
 
             </div>
