@@ -39,32 +39,37 @@ const ChannelList = () => {
                     + Create Channel
                 </button>
     
-                <CreateChannelModal 
-                    open={openModal}
-                    onClose={() => setOpenModal(false)}
-                    reloadChannels={reloadChannels}
-                />
+                <div>
+                    <CreateChannelModal 
+                        open={openModal}
+                        onClose={() => setOpenModal(false)}
+                        reloadChannels={reloadChannels}
+                    />
+                </div>
 
                 {channels.map((channel) => (
 
                     <div
                         key={channel.id}
                         onClick={() => openChannel(channel.id)}
-                        className="group flex items-center justify-between px-2 py-1 rounded hover:bg-gray-700 cursor-pointer"
-                    >
-                        <span
-                            className={`text-sm
+                        className={`group flex items-center justify-between px-2 py-1 rounded cursor-pointer text-sm
                                 ${
                                     Number(channelId) === channel.id
                                         ? "bg-gray-700" : "hover:bg-gray-700"
                                 }
                             `}
-                        >
+                    >
+                        <span>
                             # {channel.name}
                         </span>
-                        
+
                         <div
                             onClick={(e) => e.stopPropagation()}
+                            onKeyDown={(event) => {
+                                if (event.key === "Escape") {
+                                    setOpen(false);
+                                }
+                            }}
                             className="opacity-0 group-hover:opacity-100"
                         >
                             <ChannelMenu 

@@ -16,6 +16,8 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
 
     const isOwner = activeWorkspace?.created_by === user?.id;
 
+    if (!activeWorkspace) return null;
+
     const handleRename = async () => {
         if (!name.trim()) return;
 
@@ -24,7 +26,8 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
 
             setEditing(false);
             setOpen(false);
-            reloadChannels();            
+            reloadChannels();
+
         } catch (error) {
             console.error("Failed to rename channel", error);
         }
@@ -65,7 +68,10 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
                     e.stopPropagation();
                     setOpen(!open);
                 }}
-                className="text-gray-400 hover:text-white px-1"
+                onKeyDown={(event) => {
+                    if (event.key === "Escape") setOpen(false);
+                }}
+                className="text-gray-400 hover:text-white px-1 font-bold"
             >
                 ⋯
             </button>
@@ -77,7 +83,7 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
                         onClick={() => {
                             setEditing(true);
                             setOpen(false);
-                        }}
+                        }}                        
                         className="block w-full text-left px-3 py-2 hover:bg-gray-700"
                     >
                         Rename
@@ -99,16 +105,21 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
             {editing && (
                 <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
 
-                    <div className="bg-white text-gray-700 p-6 rounded-lg w-96 animate-[scaleIn_.15s_ease]">
+                    <div
+                        onKeyDown={(event) => {
+                            if (event.key === "Escape") {
+                                setOpen(false);
+                            }
+                        }} 
+                        className="text-gray-700 bg-white p-6 rounded-lg w-96 animate-[scaleIn_.15s_ease]">
 
-                        <h2 className="font-semibold mb-3">
-                            Rename Channel
-                        </h2>
+                        <h2 className="font-semibold mb-3">Rename Channel</h2>
 
                         <input
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             className="border px-3 py-2 w-full rounded"
+                            autoFocus
                         />
 
                         <div className="flex justify-end gap-2 mt-4">

@@ -16,7 +16,6 @@ const WorkspacePanel = () => {
     return (
         <div className="w-64 bg-gray-800 text-white p-4">
             <h2 className="font-bold text-lg mb-4">
-                {/* {activeWorkspace.name} */}
                 <WorkspaceMenu workspace={activeWorkspace} />
             </h2>
 
