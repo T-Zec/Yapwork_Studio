@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { updateChannel, deleteChannel } from "../../api/channelService";
 import { useWorkspace } from "../../context/WorkspaceContext";
 import { useAuth } from "../../context/AuthContext";
+import DeleteConfirmationModal from "../common/DeleteConfirmationModal";
 
 
 const ChannelMenu = ({ channel, reloadChannels }) => {
@@ -13,6 +14,9 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
     const [open, setOpen] = useState(false);
     const [editing, setEditing] = useState(false);
     const [name, setName] = useState(channel.name);
+
+    const [deleteOpen, setDeleteOpen] = useState(false);
+    const [deleting, setDeleting] = useState(false);
 
     const isOwner = activeWorkspace?.created_by === user?.id;
 
@@ -33,14 +37,20 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
         }
     };
 
-    const handleDelete = async () => {
-        if (!window.confirm("Delete this channel?")) return;
-
+    const confirmDelete = async () => {
         try {
+            setDeleting(true);
+
             await deleteChannel(activeWorkspace.id, channel.id);
+
             reloadChannels();
+            setDeleteOpen(false);
+
         } catch (error) {
             console.error("Failed to delete channel", error);
+        } finally {
+            setDeleting(false);
+            setOpen(false);
         }
 
         reloadChannels();
@@ -91,7 +101,7 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
 
                     {isOwner && (
                         <button
-                            onClick={handleDelete}
+                            onClick={() => setDeleteOpen(true)}
                             className="block w-full text-left px-3 py-2 hover:bg-gray-700 text-red-400"
                         >
                             Delete
@@ -100,6 +110,16 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
 
                 </div>
             )}
+
+            {/* Delete Modal */}
+            <DeleteConfirmationModal
+                open={deleteOpen}
+                title="Delete Channel"
+                message={`Are you sure you want to delete #${channel.name}? This cannot be undone!`}
+                onConfirm={confirmDelete}
+                onCancel={() => setDeleteOpen(false)}
+                loading={deleting}
+            />
 
             {/* Rename Modal */}
             {editing && (

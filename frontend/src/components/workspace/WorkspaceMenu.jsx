@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { updateWorkspace, deleteWorkspace } from "../../api/workspaceService";
 import { useWorkspace } from "../../context/WorkspaceContext";
 import { useAuth } from "../../context/AuthContext";
+import DeleteConfirmationModal from "../common/DeleteConfirmationModal";
 
 const WorkspaceMenu = ({ workspace }) => {
     const { activeWorkspace, setWorkspaces, setActiveWorkspace } = useWorkspace();
@@ -12,6 +13,9 @@ const WorkspaceMenu = ({ workspace }) => {
     const [open, setOpen] = useState(false);
     const [editing, setEditing] = useState(false);
     const [name, setName] = useState(activeWorkspace?.name || "");
+
+    const [deleteOpen, setDeleteOpen] = useState(false);
+    const [deleting, setDeleting] = useState(false);
 
     const isOwner = activeWorkspace?.created_by === user?.id;
 
@@ -38,18 +42,23 @@ const WorkspaceMenu = ({ workspace }) => {
         }
     };
 
-    const handleDelete = async () => {
-        if (!window.confirm("Delete this workspace?")) return;
-
+    const confirmDelete = async () => {
         try {
+            setDeleting(true);
+
             await deleteWorkspace(workspace.id);
+
             setWorkspaces((prev) =>
                 prev.filter((ws) => ws.id !== workspace.id)
             );
 
             setActiveWorkspace(null);
+
         } catch (error) {
             console.error("Failed to delete workspace", error);
+        } finally {
+            setDeleting(false);
+            setDeleteOpen(false);
         }
     };
 
@@ -107,7 +116,7 @@ const WorkspaceMenu = ({ workspace }) => {
                     </button>
 
                     <button
-                        onClick={handleDelete}
+                        onClick={() => setDeleteOpen(true)}
                         className="block w-full text-left px-3 py-2 text-red-400 hover:bg-gray-700"
                     >
                         Delete
@@ -115,6 +124,16 @@ const WorkspaceMenu = ({ workspace }) => {
 
                 </div>
             )}
+
+            {/* Delete Modal */}
+            <DeleteConfirmationModal
+                open={deleteOpen}
+                title="Delete Workspace"
+                message={`Are you sure you want to delete "${activeWorkspace.name}"? This will remove all the channels and messages.`}
+                onConfirm={confirmDelete}
+                onCancel={() => setDeleteOpen(false)}
+                loading={deleting}
+            />
 
             {/* Rename Modal */}
             {editing && (
