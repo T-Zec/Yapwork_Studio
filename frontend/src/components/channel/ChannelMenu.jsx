@@ -29,12 +29,12 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
             await updateChannel(activeWorkspace.id, channel.id, { name });
 
             setEditing(false);
-            setOpen(false);
-            reloadChannels();
+            setOpen(false);            
 
         } catch (error) {
             console.error("Failed to rename channel", error);
         }
+        await reloadChannels();
     };
 
     const confirmDelete = async () => {
@@ -43,7 +43,6 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
 
             await deleteChannel(activeWorkspace.id, channel.id);
 
-            reloadChannels();
             setDeleteOpen(false);
 
         } catch (error) {
@@ -53,7 +52,7 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
             setOpen(false);
         }
 
-        reloadChannels();
+        await reloadChannels();
     };
 
     useEffect(() => {
@@ -69,6 +68,12 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
+
+    useEffect(() => {
+            if (open) {
+                setName(channel.name || "");
+            }
+        }, [open, channel]);
 
     return (
         <div ref={menuRef} className="relative">
@@ -128,9 +133,14 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
                     <div
                         onKeyDown={(event) => {
                             if (event.key === "Escape") {
-                                setOpen(false);
+                                event.preventDefault();
+                                setEditing(false);
                             }
-                        }} 
+                            if (event.key === "Enter") {
+                                event.preventDefault();
+                                handleRename();
+                            }
+                        }}                     
                         className="text-gray-700 bg-white p-6 rounded-lg w-96 animate-[scaleIn_.15s_ease]">
 
                         <h2 className="font-semibold mb-3">Rename Channel</h2>
@@ -153,7 +163,11 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
 
                             <button
                                 onClick={handleRename}
-                                className="bg-blue-500 text-white px-3 py-1 rounded"
+                                disabled={!name.trim()}
+                                className={`text-white px-4 py-1 rounded 
+                                    ${name.trim() ? 
+                                        "bg-blue-500 hover:bg-blue-600" : 
+                                        "bg-gray-400 cursor-not-allowed"}`}
                             >
                                 Save
                             </button>

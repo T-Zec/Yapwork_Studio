@@ -5,7 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 import DeleteConfirmationModal from "../common/DeleteConfirmationModal";
 
 const WorkspaceMenu = ({ workspace }) => {
-    const { activeWorkspace, setWorkspaces, setActiveWorkspace } = useWorkspace();
+    const { activeWorkspace, setWorkspaces, switchWorkspace, reloadWorkspaces } = useWorkspace();
     const { user } = useAuth();
 
     const menuRef = useRef();
@@ -29,17 +29,20 @@ const WorkspaceMenu = ({ workspace }) => {
             setWorkspaces((prev) =>
                 prev.map((ws) => ws.id === workspace.id ? updated : ws)
             );
+            switchWorkspace(updated);
             
             if (activeWorkspace?.id === workspace.id) {
-                setActiveWorkspace(updated);
+                switchWorkspace(updated);
             }
 
             setEditing(false);
-            setOpen(false);
+            setOpen(false);            
 
         } catch (error) {
             console.error("Failed to rename workspace", error);
         }
+
+        await reloadWorkspaces();
     };
 
     const confirmDelete = async () => {
@@ -52,17 +55,20 @@ const WorkspaceMenu = ({ workspace }) => {
                 prev.filter((ws) => ws.id !== workspace.id)
             );
 
-            setActiveWorkspace(null);
+            switchWorkspace(null);
 
         } catch (error) {
             console.error("Failed to delete workspace", error);
+
         } finally {
-            setDeleting(false);
+            setDeleting(false);await reloadChannels();await reloadChannels();
             setDeleteOpen(false);
         }
+        
+        await reloadWorkspaces();
     };
 
-    useEffect(() => {
+    useEffect(() => {        
         const handleClickOutside = (event) => {
             if (menuRef.current && !menuRef.current.contains(event.target)) {
                 setOpen(false);
@@ -74,7 +80,13 @@ const WorkspaceMenu = ({ workspace }) => {
             return () => {
                 document.removeEventListener("mousedown", handleClickOutside);
             };
-        }, []);
+    }, []);
+
+    useEffect(() => {
+        if (open) {
+            setName(activeWorkspace?.name || "");
+        }
+    }, [open, activeWorkspace]);
 
     return (
         <div ref={menuRef} className="relative">
@@ -139,7 +151,18 @@ const WorkspaceMenu = ({ workspace }) => {
             {editing && (
                 <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
 
-                    <div className="text-gray-700 bg-white p-6 rounded-lg w-96 animate-[scaleIn_.15s_ease]">
+                    <div 
+                        onKeyDown={(event) => {
+                            if (event.key === "Escape") {
+                                event.preventDefault();
+                                setEditing(false);
+                            }
+                            if (event.key === "Enter") {
+                                event.preventDefault();
+                                handleRename();
+                            }
+                        }}
+                        className="text-gray-700 bg-white p-6 rounded-lg w-96 animate-[scaleIn_.15s_ease]">
 
                         <h2 className="font-semibold mb-3">Rename Workspace</h2>
 
@@ -161,7 +184,11 @@ const WorkspaceMenu = ({ workspace }) => {
 
                             <button
                                 onClick={handleRename}
-                                className="bg-blue-500 text-white px-3 py-1 rounded"
+                                disabled={!name.trim()}
+                                className={`text-white px-4 py-1 rounded 
+                                    ${name.trim() ? 
+                                        "bg-blue-500 hover:bg-blue-600" : 
+                                        "bg-gray-400 cursor-not-allowed"}`}
                             >
                                 Save
                             </button>

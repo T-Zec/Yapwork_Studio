@@ -17,9 +17,13 @@ export const WorkspaceProvider = ({ children }) => {
             setWorkspaces(data);
 
             // Automatically select first workspace if none active
-            if (data.length > 0 && !activeWorkspace) {
-                setActiveWorkspace(data[0]);
-            }
+            setActiveWorkspace((prev) => {
+                if (prev && data.find((ws) => ws.id === prev.id)) {
+                    return prev;
+                }
+                return data[0] || null;
+            });
+            
         } catch (error) {
             console.error("Failed to load workspaces", error);
         } finally {
