@@ -28,12 +28,14 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
         try {
             await updateChannel(activeWorkspace.id, channel.id, { name });
 
-            setEditing(false);
-            setOpen(false);            
-
         } catch (error) {
             console.error("Failed to rename channel", error);
+
+        } finally {
+            setEditing(false);
+            setOpen(false);
         }
+        
         await reloadChannels();
     };
 
@@ -42,13 +44,13 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
             setDeleting(true);
 
             await deleteChannel(activeWorkspace.id, channel.id);
-
-            setDeleteOpen(false);
-
+            
         } catch (error) {
             console.error("Failed to delete channel", error);
+
         } finally {
             setDeleting(false);
+            setDeleteOpen(false);
             setOpen(false);
         }
 
@@ -106,7 +108,10 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
 
                     {isOwner && (
                         <button
-                            onClick={() => setDeleteOpen(true)}
+                            onClick={() => {
+                                setDeleteOpen(true);
+                                setOpen(false);
+                            }}
                             className="block w-full text-left px-3 py-2 hover:bg-gray-700 text-red-400"
                         >
                             Delete

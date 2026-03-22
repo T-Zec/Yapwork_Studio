@@ -63,14 +63,7 @@ const ChannelList = () => {
                             # {channel.name}
                         </span>
 
-                        <div
-                            onClick={(e) => e.stopPropagation()}
-                            onKeyDown={(event) => {
-                                if (event.key === "Escape") {
-                                    setOpen(false);
-                                }
-                            }}
-                            className="opacity-0 group-hover:opacity-100"
+                        <div className="opacity-0 group-hover:opacity-100"
                         >
                             <ChannelMenu 
                                 channel={channel} 

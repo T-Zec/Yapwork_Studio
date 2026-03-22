@@ -55,14 +55,13 @@ const WorkspaceMenu = ({ workspace }) => {
                 prev.filter((ws) => ws.id !== workspace.id)
             );
 
-            switchWorkspace(null);
-
         } catch (error) {
             console.error("Failed to delete workspace", error);
 
         } finally {
-            setDeleting(false);await reloadChannels();await reloadChannels();
+            setDeleting(false);
             setDeleteOpen(false);
+            setOpen(false);
         }
         
         await reloadWorkspaces();
@@ -128,7 +127,10 @@ const WorkspaceMenu = ({ workspace }) => {
                     </button>
 
                     <button
-                        onClick={() => setDeleteOpen(true)}
+                        onClick={() => {
+                            setDeleteOpen(true);
+                            setOpen(false);
+                        }}
                         className="block w-full text-left px-3 py-2 text-red-400 hover:bg-gray-700"
                     >
                         Delete
@@ -143,7 +145,10 @@ const WorkspaceMenu = ({ workspace }) => {
                 title="Delete Workspace"
                 message={`Are you sure you want to delete "${activeWorkspace.name}"? This will remove all the channels and messages.`}
                 onConfirm={confirmDelete}
-                onCancel={() => setDeleteOpen(false)}
+                onCancel={() => {
+                    setDeleteOpen(false);
+                    setOpen();
+                }}
                 loading={deleting}
             />
 

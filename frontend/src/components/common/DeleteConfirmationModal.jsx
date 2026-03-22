@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 const DeleteConfirmationModal = ({
     open,
     title,
@@ -7,6 +9,27 @@ const DeleteConfirmationModal = ({
     loading = false
 }) => {
     if (!open) return null;
+
+    useEffect(() => {
+        if (!open) return;
+
+        const handleKeyDown = (e) => {
+            e.preventDefault();
+
+            if (e.key === "Escape") {
+                onCancel();
+            }
+            if (e.key === "Enter" && !loading) {
+                onConfirm();
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [open, loading, onConfirm, onCancel]);
 
     return (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">

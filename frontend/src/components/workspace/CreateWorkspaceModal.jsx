@@ -30,7 +30,18 @@ const CreateWorkspaceModal = ({ open, onClose }) => {
 
     return (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center">
-            <div className="bg-white text-gray-700 rounded-lg p-6 w-96 animate-[scaleIn_.15s_ease]">
+            <div
+                onKeyDown={(event) => {
+                    if (event.key === "Escape") {
+                        event.preventDefault();
+                        setName("");
+                        onClose();
+                    }
+                    if (event.key === "Enter") {
+                        handleCreate();
+                    }
+                }} 
+                className="bg-white text-gray-700 rounded-lg p-6 w-96 animate-[scaleIn_.15s_ease]">
                 <h2 className="text-lg font-semibold mb-4">Create Workspace</h2>
 
                 <form onSubmit={handleCreate} className="flex flex-col gap-3">
@@ -40,6 +51,7 @@ const CreateWorkspaceModal = ({ open, onClose }) => {
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Workspace name"
                         className="border rounded px-3 py-2"
+                        autoFocus
                     />
 
                     <textarea
@@ -61,7 +73,11 @@ const CreateWorkspaceModal = ({ open, onClose }) => {
 
                         <button
                             type="submit"
-                            className="bg-blue-500 text-white px-4 py-2 rounded"
+                            className={`text-white px-4 py-2 rounded
+                                ${name.trim() ? 
+                                        "bg-blue-500 hover:bg-blue-600" : 
+                                        "bg-gray-400 cursor-not-allowed"}
+                            `}
                         >
                             Create
                         </button>

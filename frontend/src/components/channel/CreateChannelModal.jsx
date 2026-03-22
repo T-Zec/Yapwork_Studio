@@ -28,11 +28,20 @@ const CreateChannelModal = ({ open, onClose, reloadChannels }) => {
 
     return (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center">
-            <div className="bg-white text-gray-700 p-6 rounded-lg w-96">
+            <div
+                onKeyDown={(event) => {
+                    if (event.key === "Escape") {
+                        event.preventDefault();
+                        setName("");
+                        onClose();
+                    }
+                    if (event.key === "Enter") {
+                        handleCreate();
+                    }
+                }} 
+                className="bg-white text-gray-700 rounded-lg p-6 w-96 animate-[scaleIn_.15s_ease]">
 
-                <h2 className="font-semibold mb-3">
-                    Create Channel
-                </h2>
+                <h2 className="font-semibold mb-3">Create Channel</h2>
 
                 <form 
                     onSubmit={handleCreate}
@@ -43,6 +52,7 @@ const CreateChannelModal = ({ open, onClose, reloadChannels }) => {
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Channel name"
                         className="border px-3 py-2 w-full rounded"
+                        autoFocus
                     />
 
                     <div className="flex justify-end gap-2">
@@ -57,7 +67,11 @@ const CreateChannelModal = ({ open, onClose, reloadChannels }) => {
 
                         <button
                             type="submit"
-                            className="bg-blue-500 text-white px-3 py-1 rounded"
+                            className={`text-white px-3 py-1 rounded
+                                ${name.trim() ? 
+                                        "bg-blue-500 hover:bg-blue-600" : 
+                                        "bg-gray-400 cursor-not-allowed"}
+                            `}
                         >
                             Create
                         </button>
