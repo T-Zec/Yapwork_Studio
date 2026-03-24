@@ -101,7 +101,18 @@ const MessageList = ({ messages, setMessages }) => {
                 </button>
             )} */}
 
-            {messages.map((msg, index) => (
+            {loading && (
+                <div className="space-y-2">
+                    {[...Array(10)].map((_, i) => (
+                        <div key={i} className="animate-pulse">
+                            <div className="h-3 bg-gray-300 rounded w-1/4 mb-1"></div>
+                            <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {!loading && messages.map((msg, index) => (
                 <MessageItem 
                     key={msg.id}
                     message={msg}
