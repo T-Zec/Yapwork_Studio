@@ -103,23 +103,31 @@ const MessageList = ({ messages, setMessages }) => {
 
             {loading && (
                 <div className="space-y-2">
-                    {[...Array(10)].map((_, i) => (
+                    {[...Array(8)].map((_, i) => (
                         <div key={i} className="animate-pulse">
                             <div className="h-3 bg-gray-300 rounded w-1/4 mb-1"></div>
-                            <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                            <div className="h-3 bg-gray-200 rounded w-1/2 mb-4"></div>
                         </div>
                     ))}
                 </div>
             )}
 
-            {!loading && messages.map((msg, index) => (
+            {messages.length ? 
+                (!loading && messages.map((msg, index) => (
+
                 <MessageItem 
                     key={msg.id}
                     message={msg}
                     previousMessage={messages[index - 1]}
                     setMessages={setMessages}
                 />
-            ))}
+
+                ))) : (!loading &&
+                    <div className="text-center text-gray-400 mt-12">
+                        No messages yet. Start the conversation.
+                    </div>
+                )
+            }
 
             <div ref={bottomRef} />
         </div>
