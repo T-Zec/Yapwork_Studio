@@ -19,6 +19,7 @@ const WorkspaceSidebar = () => {
             {workspaces.map((ws) => (
                 <button
                     key={ws.id}
+                    title={ws.description}
                     onClick={() => switchWorkspace(ws)}
                     className={`w-10 h-10 rounded flex items-center justify-center hover:bg-blue-500 flex-shrink-0
                         ${activeWorkspace?.id === ws.id ? "bg-blue-500" : "bg-gray-700"}

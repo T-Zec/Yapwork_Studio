@@ -3,6 +3,7 @@ import { updateChannel, deleteChannel } from "../../api/channelService";
 import { useWorkspace } from "../../context/WorkspaceContext";
 import { useAuth } from "../../context/AuthContext";
 import DeleteConfirmationModal from "../common/DeleteConfirmationModal";
+import RenameModal from "../common/RenameModal";
 
 
 const ChannelMenu = ({ channel, reloadChannels }) => {
@@ -13,6 +14,7 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
 
     const [open, setOpen] = useState(false);
     const [editing, setEditing] = useState(false);
+    const [isRenaming, setisRenaming] = useState(false);
     const [name, setName] = useState(channel.name);
 
     const [deleteOpen, setDeleteOpen] = useState(false);
@@ -26,6 +28,7 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
         if (!name.trim()) return;
 
         try {
+            setisRenaming(true);
             await updateChannel(activeWorkspace.id, channel.id, { name });
 
         } catch (error) {
@@ -33,6 +36,7 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
 
         } finally {
             setEditing(false);
+            setisRenaming(false);
             setOpen(false);
         }
         
@@ -57,19 +61,19 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
         await reloadChannels();
     };
 
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (menuRef.current && !menuRef.current.contains(event.target)) {
-                setOpen(false);
-            }
-        };
+    // useEffect(() => {
+    //     const handleClickOutside = (event) => {
+    //         if (menuRef.current && !menuRef.current.contains(event.target)) {
+    //             setOpen(false);
+    //         }
+    //     };
 
-        document.addEventListener("mousedown", handleClickOutside);
+    //     document.addEventListener("mousedown", handleClickOutside);
 
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+    //     return () => {
+    //         document.removeEventListener("mousedown", handleClickOutside);
+    //     };
+    // }, []);
 
     useEffect(() => {
             if (open) {
@@ -132,8 +136,21 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
             />
 
             {/* Rename Modal */}
-            {editing && (
-                <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
+            <RenameModal
+                open={editing}
+                title="Rename Channel"
+                initialValue={name}
+                setValue={(value) => setName(value)}
+                onSave={handleRename}
+                onCancel={() => {
+                    setEditing(false);
+                    setOpen(false);
+                }}
+                loading={isRenaming}
+            />
+
+            {/* {editing && (
+                <div className="fixed inset-0 bg-black/30 flex items-center justify-center">
 
                     <div
                         onKeyDown={(event) => {
@@ -146,7 +163,7 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
                                 handleRename();
                             }
                         }}                     
-                        className="text-gray-700 bg-white p-6 rounded-lg w-96 animate-[scaleIn_.15s_ease]">
+                        className="bg-white text-gray-700 rounded-lg p-6 w-96 animate-[scaleIn_.15s_ease]">
 
                         <h2 className="font-semibold mb-3">Rename Channel</h2>
 
@@ -159,7 +176,7 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
 
                         <div className="flex justify-end gap-2 mt-4">
 
-                            <button
+                            <buttoncxbx
                                 onClick={() => setEditing(false)}
                                 className="text-gray-500"
                             >
@@ -182,7 +199,7 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
                     </div>
 
                 </div>
-            )}
+            )} */}
 
         </div>
     );

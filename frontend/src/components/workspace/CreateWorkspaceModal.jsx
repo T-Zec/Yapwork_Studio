@@ -13,6 +13,8 @@ const CreateWorkspaceModal = ({ open, onClose }) => {
 
         if (!name) return;
 
+
+    // Sync value when modal opens
         try {
             const newWorkspace = await createWorkspace({name, description});
             setWorkspaces((prev) => [...prev, newWorkspace]);

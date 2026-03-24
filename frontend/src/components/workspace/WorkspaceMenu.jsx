@@ -3,6 +3,7 @@ import { updateWorkspace, deleteWorkspace } from "../../api/workspaceService";
 import { useWorkspace } from "../../context/WorkspaceContext";
 import { useAuth } from "../../context/AuthContext";
 import DeleteConfirmationModal from "../common/DeleteConfirmationModal";
+import RenameModal from "../common/RenameModal";
 
 const WorkspaceMenu = ({ workspace }) => {
     const { activeWorkspace, setWorkspaces, switchWorkspace, reloadWorkspaces } = useWorkspace();
@@ -12,6 +13,7 @@ const WorkspaceMenu = ({ workspace }) => {
 
     const [open, setOpen] = useState(false);
     const [editing, setEditing] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
     const [name, setName] = useState(activeWorkspace?.name || "");
 
     const [deleteOpen, setDeleteOpen] = useState(false);
@@ -25,6 +27,8 @@ const WorkspaceMenu = ({ workspace }) => {
         if (!name.trim()) return;
 
         try {
+            setIsEditing(true);
+
             const updated = await updateWorkspace(workspace.id, { name });
             setWorkspaces((prev) =>
                 prev.map((ws) => ws.id === workspace.id ? updated : ws)
@@ -36,7 +40,8 @@ const WorkspaceMenu = ({ workspace }) => {
             }
 
             setEditing(false);
-            setOpen(false);            
+            setIsEditing(false);
+            setOpen(false);        
 
         } catch (error) {
             console.error("Failed to rename workspace", error);
@@ -67,19 +72,19 @@ const WorkspaceMenu = ({ workspace }) => {
         await reloadWorkspaces();
     };
 
-    useEffect(() => {        
-        const handleClickOutside = (event) => {
-            if (menuRef.current && !menuRef.current.contains(event.target)) {
-                setOpen(false);
-            }
-        };
+    // useEffect(() => {        
+    //     const handleClickOutside = (event) => {
+    //         if (menuRef.current && !menuRef.current.contains(event.target)) {
+    //             setOpen(false);
+    //         }
+    //     };
 
-            document.addEventListener("mousedown", handleClickOutside);
+    //         document.addEventListener("mousedown", handleClickOutside);
 
-            return () => {
-                document.removeEventListener("mousedown", handleClickOutside);
-            };
-    }, []);
+    //         return () => {
+    //             document.removeEventListener("mousedown", handleClickOutside);
+    //         };
+    // }, []);
 
     useEffect(() => {
         if (open) {
@@ -147,13 +152,26 @@ const WorkspaceMenu = ({ workspace }) => {
                 onConfirm={confirmDelete}
                 onCancel={() => {
                     setDeleteOpen(false);
-                    setOpen();
+                    setOpen(false);
                 }}
                 loading={deleting}
             />
 
             {/* Rename Modal */}
-            {editing && (
+            <RenameModal
+                open={editing}
+                title="Rename Workspace"
+                initialValue={name}
+                setValue={(value) => setName(value)}
+                onSave={handleRename}
+                onCancel={() => {
+                    setEditing(false);
+                    setOpen(false);
+                }}
+                loading={isEditing}
+            />
+
+            {/* {editing && (
                 <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
 
                     <div 
@@ -202,7 +220,8 @@ const WorkspaceMenu = ({ workspace }) => {
 
                     </div>
                 </div>
-            )}
+            )} */}
+
         </div>
     );
 };
