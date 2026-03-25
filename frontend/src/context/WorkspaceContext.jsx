@@ -13,6 +13,8 @@ export const WorkspaceProvider = ({ children }) => {
 
     const loadWorkspaces = async () => {
         try {
+            setLoading(true);
+
             const data = await fetchWorkspaces();
             setWorkspaces(data);
 
@@ -31,6 +33,10 @@ export const WorkspaceProvider = ({ children }) => {
         }
     };
 
+    const switchWorkspace = (workspace) => {
+        setActiveWorkspace(workspace);
+    };
+
     useEffect(() => {
         if (!user) {
             setWorkspaces([]);
@@ -40,10 +46,6 @@ export const WorkspaceProvider = ({ children }) => {
 
         loadWorkspaces();
     }, [user]);
-
-    const switchWorkspace = (workspace) => {
-        setActiveWorkspace(workspace);
-    };
 
     return (
         <WorkspaceContext.Provider
