@@ -101,7 +101,8 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
                 <div className="absolute right-0 mt-1 bg-gray-800 text-sm rounded border shadow-lg w-32">
 
                     <button
-                        onClick={() => {
+                        onClick={(e) => {
+                            e.stopPropagation();
                             setEditing(true);
                             setOpen(false);
                         }}                        
@@ -112,7 +113,8 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
 
                     {isOwner && (
                         <button
-                            onClick={() => {
+                            onClick={(e) => {
+                                e.stopPropagation();
                                 setDeleteOpen(true);
                                 setOpen(false);
                             }}

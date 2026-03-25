@@ -21,7 +21,7 @@ const WorkspaceSidebar = () => {
                     key={ws.id}
                     title={ws.description}
                     onClick={() => switchWorkspace(ws)}
-                    className={`w-10 h-10 rounded flex items-center justify-center hover:bg-blue-500 flex-shrink-0
+                    className={`w-10 h-10 rounded flex items-center justify-center hover:bg-blue-500 flex-shrink-0 transition
                         ${activeWorkspace?.id === ws.id ? "bg-blue-500" : "bg-gray-700"}
                     `}
                 >
@@ -32,7 +32,7 @@ const WorkspaceSidebar = () => {
             {isOwner &&
                 <button
                     onClick={() => setOpenModal(true)}
-                    className="w-10 h-10 rounded text-lg bg-blue-500 hover:scale-110 flex-shrink-0"
+                    className="w-10 h-10 rounded text-lg bg-blue-500 hover:scale-110 flex-shrink-0 transition"
                 >
                     +
                 </button>

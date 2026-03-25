@@ -8,7 +8,7 @@ const CreateChannelModal = ({ open, onClose, reloadChannels }) => {
     const [name, setName] = useState("");
 
     const handleCreate = async (e) => {
-        e.preventDefault();
+        if (e) e.preventDefault();
 
         if(!name.trim()) return;
 

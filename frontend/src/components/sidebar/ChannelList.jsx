@@ -13,6 +13,10 @@ const ChannelList = () => {
     
     const navigate = useNavigate();
 
+    const openChannel = (channelId) => {
+        navigate(`/workspaces/${activeWorkspace.id}/channels/${channelId}/`);
+    };
+
     useEffect(() => {
         if (!activeWorkspace) return;
         
@@ -20,11 +24,6 @@ const ChannelList = () => {
     }, [activeWorkspace]);
 
     if (!activeWorkspace) return null;
-
-    const openChannel = (channelId) => {
-        navigate(`/workspaces/${activeWorkspace.id}/channels/${channelId}/`);
-    };
-
 
     return (
         <div>
@@ -34,7 +33,7 @@ const ChannelList = () => {
 
                 <button
                     onClick={() => setOpenModal(true)}
-                    className="text-xs text-blue-400 mt-2"
+                    className="text-xs text-blue-400 hover:text-blue-300 mt-2"
                 >
                     + Create Channel
                 </button>

@@ -8,8 +8,6 @@ const DeleteConfirmationModal = ({
     onCancel,
     loading = false
 }) => {
-    if (!open) return null;
-
     useEffect(() => {
         if (!open) return;
 
@@ -31,10 +29,12 @@ const DeleteConfirmationModal = ({
         };
     }, [open, loading, onConfirm, onCancel]);
 
+    if (!open) return null;
+
     return (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
 
-            <div className="bg-white text-gray-700 rounded-lg p-6 w-96 shadow-lg">
+            <div className="bg-white text-gray-700 rounded-lg p-6 w-96 shadow-lg animate-[scaleIn_.15s_ease]">
 
                 <h2 className="text-lg font-semibold mb-2">
                     {title}
