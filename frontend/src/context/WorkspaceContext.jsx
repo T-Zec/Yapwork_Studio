@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { fetchWorkspaces } from "../api/workspaceService";
 import { useAuth } from "./AuthContext";
+import { setItem, getItem } from "../utils/appStorage";
 
 const WorkspaceContext = createContext();
 
@@ -18,16 +19,31 @@ export const WorkspaceProvider = ({ children }) => {
             const data = await fetchWorkspaces();
             setWorkspaces(data);
 
+            const savedWorkspaceId = getItem("lastWorkspaceId");
+            let selectedWorkspace = null;
+
+            if (savedWorkspaceId) {
+                selectedWorkspace = data.find((ws) => ws.id === savedWorkspaceId);
+            }
+
+            if (!selectedWorkspace && data.length > 0) {
+                selectedWorkspace = data[0];
+            }
+
+            if (selectedWorkspace) {
+                setActiveWorkspace(selectedWorkspace);
+            }
+
             // Automatically select first workspace if none active
-            setActiveWorkspace((prev) => {
-                if (prev && data.find((ws) => ws.id === prev.id)) {
-                    return prev;
-                }
-                return data[0] || null;
-            });
+            // setActiveWorkspace((prev) => {
+            //     if (prev && data.find((ws) => ws.id === prev.id)) {
+            //         return prev;
+            //     }
+            //     return data[0] || null;
             
         } catch (error) {
             console.error("Failed to load workspaces", error);
+
         } finally {
             setLoading(false);
         }
@@ -40,6 +56,8 @@ export const WorkspaceProvider = ({ children }) => {
 
         try {
             setActiveWorkspace(workspace);
+            setItem("lastWorkspaceId", workspace.id);
+            setItem("lastChannelId", null);
         } catch (error) {
             console.log("Error while switching workspace", error);
         } finally {
