@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useEffectEvent, useState } from "
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchChannels } from "../api/channelService"
 import { useWorkspace } from "./WorkspaceContext";
-import { getItem } from "../utils/appStorage";
+import { getLastChannelForWorkspace } from "../utils/appStorage";
 
 const ChannelContext = createContext();
 
@@ -24,7 +24,7 @@ export const ChannelProvider = ({ children }) => {
             const data = await fetchChannels(activeWorkspace.id);
             setChannels(data);
 
-            const savedChannelId = getItem("lastChannelId");
+            const savedChannelId = getLastChannelForWorkspace(activeWorkspace.id);
 
             let selectedChannel = null;
 

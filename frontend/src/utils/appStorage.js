@@ -42,3 +42,22 @@ export const removeItem = (key) => {
 export const clearStorage = () => {
     localStorage.removeItem(STORAGE_KEY);
 };
+
+// Last channel for workspace setter
+export const setLastChannelForWorkspace = (workspaceId, channelId) => {
+    const storage = getStorage();
+
+    const lastChannels = storage.lastChannels || {};
+
+    lastChannels[workspaceId] = channelId;
+    storage.lastChannels = lastChannels;
+
+    setStorage(storage);
+};
+
+// Last channel for workspace getter
+export const getLastChannelForWorkspace = (workspaceId) => {
+    const storage = getStorage();
+
+    return storage.lastChannels?.[workspaceId];
+};

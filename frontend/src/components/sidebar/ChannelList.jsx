@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import CreateChannelModal from "../channel/CreateChannelModal";
 import ChannelMenu from "../channel/ChannelMenu";
 import ChannelSkeleton from "../channel/ChannelSkeleton";
-import { setItem } from "../../utils/appStorage";
+import { setLastChannelForWorkspace } from "../../utils/appStorage";
 
 const ChannelList = () => {
     const { activeWorkspace } = useWorkspace();
@@ -16,8 +16,8 @@ const ChannelList = () => {
     const navigate = useNavigate();
 
     const openChannel = (channelId) => {
-        setItem("lastChannelId", channelId);
-        
+        setLastChannelForWorkspace(activeWorkspace.id, channelId);
+
         navigate(`/workspaces/${activeWorkspace.id}/channels/${channelId}/`);
     };
 

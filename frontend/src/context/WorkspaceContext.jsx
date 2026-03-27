@@ -57,7 +57,6 @@ export const WorkspaceProvider = ({ children }) => {
         try {
             setActiveWorkspace(workspace);
             setItem("lastWorkspaceId", workspace.id);
-            setItem("lastChannelId", null);
         } catch (error) {
             console.log("Error while switching workspace", error);
         } finally {
