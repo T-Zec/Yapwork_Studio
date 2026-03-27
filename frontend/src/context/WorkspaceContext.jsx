@@ -34,7 +34,23 @@ export const WorkspaceProvider = ({ children }) => {
     };
 
     const switchWorkspace = (workspace) => {
-        setActiveWorkspace(workspace);
+        const start = Date.now();
+
+        setLoading(true);
+
+        try {
+            setActiveWorkspace(workspace);
+        } catch (error) {
+            console.log("Error while switching workspace", error);
+        } finally {
+            const elapsed = Date.now() - start;
+
+            const delay = Math.max(500 - elapsed, 150);
+
+            setTimeout(() => {
+                setLoading(false);
+            }, delay);
+        }
     };
 
     useEffect(() => {

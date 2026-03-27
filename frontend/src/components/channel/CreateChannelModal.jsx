@@ -59,7 +59,10 @@ const CreateChannelModal = ({ open, onClose, reloadChannels }) => {
 
                         <button
                             type="button"
-                            onClick={onClose}
+                            onClick={() => {
+                                onClose();
+                                setName("");
+                            }}
                             className="text-gray-500"
                         >
                             Cancel

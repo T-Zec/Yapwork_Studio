@@ -1,17 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useWorkspace } from "../../context/WorkspaceContext";
 import CreateWorkspaceModal from "../workspace/CreateWorkspaceModal";
-import { useAuth } from "../../context/AuthContext";
 
 const WorkspaceSidebar = () => {
     const { workspaces, activeWorkspace, switchWorkspace } = useWorkspace();
-    const { user } = useAuth();
     const [openModal, setOpenModal] = useState(false);
-    const isOwner = activeWorkspace?.created_by === user?.id;
-
-    useEffect(() => {
-        const isOwner = activeWorkspace?.created_by === user?.id;
-    }, [activeWorkspace]);
 
     return (
         <div className="w-16 bg-gray-900 text-white flex flex-col items-center py-4 space-y-3 overflow-auto max-h-screen scrollbar-hide scrollbar-hidden">
@@ -28,15 +21,13 @@ const WorkspaceSidebar = () => {
                     {ws.name.charAt(0).toUpperCase()}
                 </button>
             ))}
-
-            {isOwner &&
-                <button
-                    onClick={() => setOpenModal(true)}
-                    className="w-10 h-10 rounded text-lg bg-blue-500 hover:scale-110 flex-shrink-0 transition"
-                >
-                    +
-                </button>
-            }
+            
+            <button
+                onClick={() => setOpenModal(true)}
+                className="w-10 h-10 rounded text-lg bg-blue-500 hover:scale-110 flex-shrink-0 transition"
+            >
+                +
+            </button>
 
             <CreateWorkspaceModal
                 open={openModal}

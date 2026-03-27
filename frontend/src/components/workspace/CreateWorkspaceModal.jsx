@@ -67,7 +67,10 @@ const CreateWorkspaceModal = ({ open, onClose }) => {
 
                         <button
                             type="button"
-                            onClick={onClose}
+                            onClick={() => {
+                                onClose();
+                                setName("");
+                            }}
                             className="text-gray-500"
                         >
                             Cancle

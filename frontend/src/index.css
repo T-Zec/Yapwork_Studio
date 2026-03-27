@@ -26,3 +26,12 @@ html, body, #root {
     opacity: 1;
   }
 }
+
+@keyframes smoothPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.animate-smooth-pulse {
+  animation: smoothPulse 1.6s ease-in-out infinite;
+}

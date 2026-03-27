@@ -3,12 +3,12 @@ import WorkspaceSidebar from "../components/sidebar/WorkspaceSidebar";
 import WorkspacePanel from "../components/sidebar/WorkspacePanel";
 import { useAuth } from "../context/AuthContext";
 import LoadingScreen from "../components/common/LoadingScreen";
-import { useChannels } from "../context/ChannelContext";
+import { useWorkspace } from "../context/WorkspaceContext";
 
 const DashboardLayout = () => {
     const navigate = useNavigate();
     const { logout } = useAuth();
-    const { loading } = useChannels();
+    const { loading } = useWorkspace();
 
     const handleLogout = () => {
         logout();

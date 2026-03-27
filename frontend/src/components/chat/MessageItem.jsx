@@ -125,7 +125,7 @@ const MessageItem = ({ message, previousMessage, setMessages }) => {
                                     className="max-w-xs rounded border"
                                 />
                             ) : (
-                                <div className="border rounded-lg p-2 bg-gray-50 flex items-center justify-between max-w-xs">
+                                <div className="border rounded-lg p-2 bg-gray-50 flex items-center justify-between max-w-xs select-none">
 
                                     <span className="text-sm truncate">
                                         📎 {message.attachment.split("/").pop()}
@@ -139,6 +139,7 @@ const MessageItem = ({ message, previousMessage, setMessages }) => {
                                     >
                                         Download
                                     </a>
+                                    
                                 </div>
                             )}
                         </div>

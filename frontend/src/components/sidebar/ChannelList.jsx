@@ -4,10 +4,11 @@ import { useChannels } from "../../context/ChannelContext";
 import { useNavigate, useParams } from "react-router-dom";
 import CreateChannelModal from "../channel/CreateChannelModal";
 import ChannelMenu from "../channel/ChannelMenu";
+import ChannelSkeleton from "../channel/ChannelSkeleton";
 
 const ChannelList = () => {
     const { activeWorkspace } = useWorkspace();
-    const { channels, reloadChannels } = useChannels();
+    const { channels, reloadChannels, loading } = useChannels();
     const { channelId } = useParams();    
     const [openModal, setOpenModal] = useState(false);
     
@@ -26,7 +27,7 @@ const ChannelList = () => {
     if (!activeWorkspace) return null;
 
     return (
-        <div>
+        <div className="min-h-[120px]">
             <h3 className="text-xs uppercase text-gray-400 mb-2">Channels</h3>
 
             <div className="space-y-1">
@@ -46,33 +47,35 @@ const ChannelList = () => {
                     />
                 </div>
 
-                {channels.map((channel) => (
-
-                    <div
-                        key={channel.id}
-                        onClick={() => openChannel(channel.id)}
-                        className={`group flex items-center justify-between px-2 py-1 rounded cursor-pointer text-sm
-                                ${
-                                    Number(channelId) === channel.id
-                                        ? "bg-gray-700" : "hover:bg-gray-700"
-                                }
-                            `}
-                    >
-                        <span>
-                            # {channel.name}
-                        </span>
-
-                        <div className="opacity-0 group-hover:opacity-100"
+                {loading ? (
+                    <ChannelSkeleton />
+                ) : (
+                    channels.map((channel) => (
+                        <div
+                            key={channel.id}
+                            onClick={() => openChannel(channel.id)}
+                            className={`group flex items-center justify-between px-2 py-1 rounded cursor-pointer text-sm
+                                    ${
+                                        Number(channelId) === channel.id
+                                            ? "bg-gray-700" : "hover:bg-gray-700"
+                                    }
+                                `}
                         >
-                            <ChannelMenu 
-                                channel={channel} 
-                                reloadChannels={reloadChannels}
-                            />
-                        </div>
+                            <span>
+                                # {channel.name}
+                            </span>
 
-                    </div>
-                    
-                ))}
+                            <div className="opacity-0 group-hover:opacity-100"
+                            >
+                                <ChannelMenu 
+                                    channel={channel} 
+                                    reloadChannels={reloadChannels}
+                                />
+                            </div>
+
+                        </div>
+                    ))
+                )}
 
             </div>
         </div>
