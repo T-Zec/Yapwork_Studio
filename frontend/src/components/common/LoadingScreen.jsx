@@ -1,6 +1,6 @@
 const LoadingScreen = ({ text = "Loading..." }) => {
     return (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-200">
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 pointer-events-auto transition-opacity duration-200">
 
             <div className="bg-white px-6 py-4 rounded-xl shadow-lg flex flex-col items-center gap-3">
 

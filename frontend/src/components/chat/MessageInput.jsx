@@ -41,7 +41,7 @@ const MessageInput = ({ setMessages }) => {
     return (
         <form 
             onSubmit={handleSend} 
-            className="border-t p-2"
+            className="border-t p-2 select-none"
         >
 
             {/* File Preview */}
@@ -67,7 +67,7 @@ const MessageInput = ({ setMessages }) => {
                 <button
                     type="button"
                     onClick={() => fileInputRef.current.click()}
-                    className="w-8 h-8 text-gray-500 hover:text-blue-500 hover:bg-gray-200 transition text-lg rounded"
+                    className="w-8 h-8 text-gray-500 hover:text-blue-500 hover:bg-blue-100 transition text-lg rounded"
                 >
                     +
                 </button>

@@ -7,7 +7,10 @@ const WorkspaceSidebar = () => {
     const [openModal, setOpenModal] = useState(false);
 
     return (
-        <div className="w-16 bg-gray-900 text-white flex flex-col items-center py-4 space-y-3 overflow-auto max-h-screen scrollbar-hide scrollbar-hidden">
+        <div className="w-16 bg-gray-900 text-white 
+            flex flex-col items-center py-4 space-y-3 select-none
+            overflow-y-auto max-h-screen scrollbar-hidden
+        ">
 
             {workspaces.map((ws) => (
                 <button

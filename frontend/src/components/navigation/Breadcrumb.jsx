@@ -1,6 +1,6 @@
 const Breadcrumb = ({ items = [] }) => {
     return (
-        <div className="text-sm text-gray-500 mb-3">
+        <div className="text-sm text-gray-500 mb-3 select-none">
 
             {items.map((item, index) => (
                 <span key={index}>

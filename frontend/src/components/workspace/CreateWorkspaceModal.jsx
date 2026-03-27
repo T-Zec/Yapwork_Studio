@@ -31,12 +31,13 @@ const CreateWorkspaceModal = ({ open, onClose }) => {
     if (!open) return null;
 
     return (
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center">
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center select-none">
             <div
                 onKeyDown={(event) => {
                     if (event.key === "Escape") {
                         event.preventDefault();
                         setName("");
+                        setDescription("");
                         onClose();
                     }
                     if (event.key === "Enter") {
@@ -52,7 +53,7 @@ const CreateWorkspaceModal = ({ open, onClose }) => {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Workspace name"
-                        className="border rounded px-3 py-2"
+                        className="border rounded px-3 py-2 select-text"
                         autoFocus
                     />
 
@@ -60,7 +61,7 @@ const CreateWorkspaceModal = ({ open, onClose }) => {
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         placeholder="Description (optional)"
-                        className="border rounded px-3 py-2"
+                        className="border rounded px-3 py-2 select-text"
                     />
 
                     <div className="flex justify-end gap-2 mt-3">
@@ -68,8 +69,9 @@ const CreateWorkspaceModal = ({ open, onClose }) => {
                         <button
                             type="button"
                             onClick={() => {
-                                onClose();
                                 setName("");
+                                setDescription("");
+                                onClose();
                             }}
                             className="text-gray-500"
                         >
