@@ -67,7 +67,7 @@ const MessageItem = ({ message, previousMessage, setMessages }) => {
 
                 {!sameUser && (
                     <div className="flex items-center gap-2">
-                        <span className="font-semibold text-sm">
+                        <span className="font-semibold text-sm truncate min-w-[120px] break-all">
                             {message.sender?.username}
                         </span>
 

@@ -96,22 +96,34 @@ const WorkspaceMenu = ({ workspace }) => {
         <div ref={menuRef} className="relative">
 
             {isOwner ? (
-                <button
+                <div
                     onClick={(e) => {
-                        e.stopPropagation();
-                        setOpen(!open);
-                    }}
-                    onKeyDown={(event) => {
+                            e.stopPropagation();
+                            setOpen(!open);
+                        }}
+                        onKeyDown={(event) => {
                             if (event.key === "Escape") setOpen(false);
                         }}
-                    className="text-sm font-semibold"
+                    className="flex justify-between text-sm font-semibold truncate min-w-0"
                 >
-                    {workspace.name} {open ? '▲' : '▼'}
-                </button>
+
+                    <button
+                        title={workspace.name}
+                        className="text-sm font-semibold truncate min-w-0"
+                    >
+                        {workspace.name}
+                    </button>
+
+                    <button>
+                        {open ? '▲' : '▼'}
+                    </button>
+                    
+                </div>
             ) : (
 
-                <button                    
-                    className="text-sm font-semibold"
+                <button
+                    title={workspace.name}
+                    className="text-sm font-semibold truncate min-w-0"
                 >
                     {workspace.name}
                 </button>

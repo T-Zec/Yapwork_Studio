@@ -123,7 +123,7 @@ const MessageList = ({ messages, setMessages }) => {
                 />
 
                 ))) : (!loading &&
-                    <div className="text-center text-gray-400 mt-12">
+                    <div className="text-center text-gray-400 mt-12 select-none">
                         No messages yet. Start the conversation.
                     </div>
                 )

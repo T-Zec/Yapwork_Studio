@@ -15,11 +15,11 @@ const WorkspacePanel = () => {
 
     return (
         <div className="w-64 h-full flex flex-col bg-gray-800 text-white p-4 select-none">
-            <h2 className="font-bold text-lg mb-4">
+            <h2 className="flex-shrink-0 font-bold text-lg mb-4">
                 <WorkspaceMenu workspace={activeWorkspace} />
             </h2>
 
-            <div className="min-h-0 flex-1 overflow-y-auto scrollbar-hidden">
+            <div className="flex-shrink-0 min-h-0 flex-1 overflow-y-auto scrollbar-hidden">
                 <ChannelList />
             </div>
             
