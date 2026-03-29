@@ -104,7 +104,7 @@ const WorkspaceMenu = ({ workspace }) => {
                         onKeyDown={(event) => {
                             if (event.key === "Escape") setOpen(false);
                         }}
-                    className="flex justify-between text-sm font-semibold truncate min-w-0"
+                    className="flex justify-between text-sm font-semibold truncate min-w-0 cursor-pointer"
                 >
 
                     <button

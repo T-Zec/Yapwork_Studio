@@ -41,7 +41,7 @@ const MessageInput = ({ setMessages }) => {
     return (
         <form 
             onSubmit={handleSend} 
-            className="border-t p-2 select-none"
+            className="p-2 select-none"
         >
 
             {/* File Preview */}
@@ -61,13 +61,13 @@ const MessageInput = ({ setMessages }) => {
                 </div>
             )}
             
-            <div className="flex items-center gap-2 border rounded-lg px-3 py-2 bg-white">
+            <div className="flex items-center gap-2 rounded-lg px-3 py-2 bg-gray-100/40">
 
                 {/* Attachment Button */}
                 <button
                     type="button"
                     onClick={() => fileInputRef.current.click()}
-                    className="w-8 h-8 text-gray-500 hover:text-blue-500 hover:bg-blue-100 transition text-lg rounded"
+                    className="w-8 h-8 text-gray-500 hover:text-blue-500 hover:bg-blue-100/40 transition text-lg rounded"
                 >
                     +
                 </button>
@@ -84,12 +84,12 @@ const MessageInput = ({ setMessages }) => {
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     placeholder="Send a message..."
-                    className="flex-1 outline-none text-sm"
+                    className="flex-1 text-gray-800 outline-none text-sm bg-transparent"
                 />
 
                 <button
                     type="submit"
-                    className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-1.5 text-sm hover:scale-95 rounded transition"
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-1.5 text-sm hover:scale-95 rounded transition"
                 >
                     Send
                 </button>

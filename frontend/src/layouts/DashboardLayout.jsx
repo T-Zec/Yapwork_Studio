@@ -12,7 +12,7 @@ const DashboardLayout = () => {
             {loading && (
                 <LoadingScreen text="Loading Workspace..." />
             )}
-            {<div className="flex h-screen">
+            {<div className="flex h-screen overflow-hidden">
 
                 {/* Workspace Switcher */}
                 <WorkspaceSidebar />
@@ -21,9 +21,23 @@ const DashboardLayout = () => {
                 <WorkspacePanel />
 
                 {/* Main Layout */}
-                <main className="flex-1 bg-gray-100 p-6 overflow-y-auto">
+                <main className="flex-1 overflow-hidden">
 
-                    <Outlet />
+                    <div className="absolute inset-0 -z-10">
+
+                        <img 
+                            src="/src/assets/background/background.jpg" 
+                            alt="bg" 
+                            className="w-full h-full object-cover"
+                        />
+                        {/* <div className="absolute inset-0 bg-black/30" /> */}
+
+                    </div>
+
+                    <div className="relative z-10 h-full p-6 overflow-y-auto">
+                        <Outlet />
+                    </div>
+
 
                 </main>
 

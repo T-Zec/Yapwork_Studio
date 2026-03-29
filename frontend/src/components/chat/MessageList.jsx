@@ -90,7 +90,7 @@ const MessageList = ({ messages, setMessages }) => {
         <div
             ref={containerRef} 
             onScroll={handleScroll}
-            className="flex flex-col gap-2 p-2 overflow-y-auto h-full">
+            className="flex flex-col p-2 overflow-y-auto h-full">
 
             {/* {hasNext && (
                 <button
@@ -105,8 +105,8 @@ const MessageList = ({ messages, setMessages }) => {
                 <div className="space-y-2">
                     {[...Array(8)].map((_, i) => (
                         <div key={i} className="animate-pulse">
-                            <div className="h-3 bg-gray-300 rounded w-1/4 mb-1"></div>
-                            <div className="h-3 bg-gray-200 rounded w-1/2 mb-4"></div>
+                            <div className="h-3 bg-gray-300/60 rounded w-1/4 mb-1"></div>
+                            <div className="h-3 bg-gray-200/60 rounded w-1/2 mb-4"></div>
                         </div>
                     ))}
                 </div>
