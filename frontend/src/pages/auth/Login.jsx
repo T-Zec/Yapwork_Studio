@@ -36,12 +36,20 @@ export default function Login() {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <div className="flex items-center justify-center min-h-screen"> {/*  bg-blue-100 */}
+
+            <img 
+                src="/src/assets/background/bg-blue.jpg"
+                className="fixed place-self-stretch inset-0 -z-10"
+            />
+            
+            <div className="fixed inset-0 bg-black/30 -z-10" />
+
             <form 
             onSubmit={handleSubmit} 
             className="bg-white p-8 rounded shadow-md w-96"
             >
-                <h2 className="text-2xl font-bold mb-6 text-center">Login to Yapwork</h2>
+                <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">Login to Yapwork</h2>
                 {error && (
                     <div className="bg-red-100 text-red-600 p-2 mb-4 rounded">{error}</div>
                 )}
@@ -70,6 +78,7 @@ export default function Login() {
                     {loading ? "Logging in..." : "Login"}
                 </button>
             </form>
+            
         </div>
     );
 }

@@ -27,7 +27,7 @@ export default function Register() {
 
         try {
             await register(form);
-            alert("Registration successful. Please login.");
+            alert("Registration successful. Please log in.");
             navigate("/login");
         } catch (err) {
             setError("Invalid credentials");
@@ -39,12 +39,20 @@ export default function Register() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-green-100">
+        <div className="min-h-screen flex items-center justify-center"> {/*  bg-blue-100 */}
+
+            <img 
+                src="/src/assets/background/bg-blue.jpg" 
+                className="fixed place-self-stretch inset-0 -z-10"
+            />
+
+            <div className="fixed inset-0 bg-black/30 -z-10" />
+            
             <form
             onSubmit={handleSubmit}
-            className="bg-white p-8 shadow-md w-96"
+            className="bg-white p-8 rounded shadow-md w-96"
             >
-                <h2 className="text-2xl font-bold mb-6 text-center">Register to Yapwork</h2>
+                <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">Register to Yapwork</h2>
                 {error && (
                     <div className="bg-red-100 text-red-600 p-2 mb-4 rouded">{error}</div>
                 )}
@@ -88,11 +96,12 @@ export default function Register() {
                 <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700 transition"
+                    className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition"
                 >
-                    {loading ? "Logging in..." : "Login"}
+                    {loading ? "Registering..." : "Register"}
                 </button>
             </form>
+            
         </div>
     );
 };

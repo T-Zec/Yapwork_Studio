@@ -6,7 +6,7 @@ import DeleteConfirmationModal from "../common/DeleteConfirmationModal";
 import RenameModal from "../common/RenameModal";
 
 const WorkspaceMenu = ({ workspace }) => {
-    const { activeWorkspace, setWorkspaces, switchWorkspace, reloadWorkspaces } = useWorkspace();
+    const { activeWorkspace, setActiveWorkspace, setWorkspaces, switchWorkspace, reloadWorkspaces } = useWorkspace();
     const { user } = useAuth();
 
     const menuRef = useRef();
@@ -67,6 +67,7 @@ const WorkspaceMenu = ({ workspace }) => {
             setDeleting(false);
             setDeleteOpen(false);
             setOpen(false);
+            setActiveWorkspace(null);
         }
         
         await reloadWorkspaces();
