@@ -47,7 +47,7 @@ export default function Login() {
 
             <form 
             onSubmit={handleSubmit} 
-            className="bg-white p-8 rounded shadow-md w-96"
+            className="bg-white text-gray-700 p-8 rounded shadow-md w-96 select-none"
             >
                 <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">Login to Yapwork</h2>
                 {error && (
@@ -77,6 +77,11 @@ export default function Login() {
                 >
                     {loading ? "Logging in..." : "Login"}
                 </button>
+
+                <div className="mt-3 flex items-center justify-between">
+                    <span className="">Don't have an account?</span>
+                    <a href="/register" className="text-blue-500 hover:text-blue-700">Register</a>
+                </div>
             </form>
             
         </div>

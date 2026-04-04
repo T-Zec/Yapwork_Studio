@@ -50,7 +50,7 @@ export default function Register() {
             
             <form
             onSubmit={handleSubmit}
-            className="bg-white p-8 rounded shadow-md w-96"
+            className="bg-white text-gray-700 p-8 rounded shadow-md w-96 select-none"
             >
                 <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">Register to Yapwork</h2>
                 {error && (
@@ -100,6 +100,12 @@ export default function Register() {
                 >
                     {loading ? "Registering..." : "Register"}
                 </button>
+
+                <div className="mt-3 flex items-center justify-between">
+                    <span className="">Already have an account?</span>
+                    <a href="/login" className="text-blue-500 hover:text-blue-700">Login</a>
+                </div>
+
             </form>
             
         </div>
