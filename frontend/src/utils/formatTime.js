@@ -17,7 +17,6 @@ export const formateTimestamp = (dateString) => {
     if (isToday) return `Today ${time}`;
     if (isYesterday) return `Yesterday ${time}`;
 
-    return date.toLocaleTimeString();
-    // return date.toLocaleTimeString() + " " + time;
+    // return date.toLocaleTimeString();
+    return date.toLocaleDateString() + " | " + time;
 };
-// fix double time show up

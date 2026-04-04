@@ -61,7 +61,7 @@ const MessageInput = ({ setMessages }) => {
                 </div>
             )}
             
-            <div className="flex items-center gap-2 rounded-lg px-3 py-2 bg-gray-100/40">
+            <div className="flex items-center gap-2 rounded-lg px-3 py-2 bg-white/40">
 
                 {/* Attachment Button */}
                 <button

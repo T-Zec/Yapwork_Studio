@@ -30,13 +30,13 @@ const BaseModal = ({
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50" tabIndex={-1}>
             <div className="bg-white text-gray-700 rounded-lg p-6 w-96 shadow-lg animate-[scaleIn_.15s_ease]">
 
-                <h2 className="text-lg font-semibold mb-3">
+                <h2 className="text-lg font-semibold mb-3 select-none">
                     {title}
                 </h2>
 
                 <div className="mb-4">{children}</div>
 
-                <div className="flex justify-end gap-3">
+                <div className="flex justify-end gap-3 select-none">
                     <button 
                         onClick={onClose}
                         className="text-gray-500"

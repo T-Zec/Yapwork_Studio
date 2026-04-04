@@ -25,7 +25,6 @@ export default function Login() {
 
         try {
             await login(formData);
-            alert("Login successful");
             navigate("/dashboard");
         } catch (err) {
             alert("Login failed");
