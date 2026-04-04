@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import bgImage from "../../assets/background/bg-blue.jpg";
 
 export default function Register() {
     const { register } = useAuth();
@@ -42,8 +43,8 @@ export default function Register() {
         <div className="min-h-screen flex items-center justify-center"> {/*  bg-blue-100 */}
 
             <img 
-                src="/src/assets/background/bg-blue.jpg" 
-                className="fixed place-self-stretch inset-0 -z-10"
+                src={bgImage} 
+                className="fixed inset-0 w-full h-full object-cover -z-10"
             />
 
             <div className="fixed inset-0 bg-black/30 -z-10" />
