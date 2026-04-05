@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15
+    container_name: yapwork_db
+    environment:
+      POSTGRES_DB: yapwork_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+
+  backend:
+    build: ./backend  
+    container_name: yapwork_backend
+    command: gunicorn core.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
