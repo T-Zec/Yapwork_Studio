@@ -31,11 +31,15 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
+ALLOWED_HOSTS = [host.strip() for host in os.getenv("ALLOWED_HOSTS", "").split(",") if host.strip()]
 
-CSRF_TRUSTED_ORIGINS = [
-    f"https://{host.strip()}" for host in ALLOWED_HOSTS if host.strip()
-]
+CSRF_TRUSTED_ORIGINS = []
+
+for host in ALLOWED_HOSTS:
+    if "localhost" in host or "127.0.0.1" in host:
+        CSRF_TRUSTED_ORIGINS.append(f"http://{host}")
+    else:
+        CSRF_TRUSTED_ORIGINS.append(f"https://{host}")
 
 
 # Application definition
@@ -180,13 +184,12 @@ SIMPLE_JWT = {
 }
 
 # CORS settings
-"""
-CCORS_ALLOWED_ORIGINS = [
+CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "http://yapwork.vercel.app",
+    "https://yapwork.vercel.app",
 ]
-"""
-CORS_ALLOW_ALL_ORIGINS = True
+
+# CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 from corsheaders.defaults import default_headers
