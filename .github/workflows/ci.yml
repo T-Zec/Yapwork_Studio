@@ -15,6 +15,10 @@ jobs:
     defaults:
       run:
         working-directory: ./backend
+
+    env:
+      SECRET_KEY: text_secret_for_ci_purposes
+      DEBUG: False
     
     steps:
       - name: Checkout Code
