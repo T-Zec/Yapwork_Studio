@@ -8,7 +8,6 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [accessToken, setAccessToken] = useState(null);
     const [loading, setLoading] = useState(true);
 
     const hasInitialized = useRef(false);
@@ -16,8 +15,7 @@ export const AuthProvider = ({ children }) => {
     const login = async (credentials) => {
         try {
             const data = await loginRequest(credentials);
-
-            setAccessToken(data.access);
+            
             setRefreshToken(data.refresh);
             
             axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${data.access}`;
@@ -42,7 +40,6 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("refresh_token");
         
         setUser(null);
-        setAccessToken(null);
         clearTokens();
 
         delete axiosInstance.defaults.headers.common["Authorization"];
@@ -63,7 +60,6 @@ export const AuthProvider = ({ children }) => {
             
             try {
                 const data = await refreshRequest(refreshToken);
-                setAccessToken(data.access);
 
                 axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${data.access}`;
 

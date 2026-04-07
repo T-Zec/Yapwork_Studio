@@ -20,9 +20,7 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [deleting, setDeleting] = useState(false);
 
-    const isOwner = activeWorkspace?.created_by === user?.id;
-
-    if (!activeWorkspace) return null;
+    const isOwner = activeWorkspace?.created_by === user?.id;    
 
     const handleRename = async () => {
         if (!name.trim()) return;
@@ -80,6 +78,8 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
                 setName(channel.name || "");
             }
         }, [open, channel]);
+
+    if (!activeWorkspace) return null;
 
     return (
         <div ref={menuRef} className="relative">
