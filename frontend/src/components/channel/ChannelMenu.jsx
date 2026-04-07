@@ -59,19 +59,19 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
         await reloadChannels();
     };
 
-    // useEffect(() => {
-    //     const handleClickOutside = (event) => {
-    //         if (menuRef.current && !menuRef.current.contains(event.target)) {
-    //             setOpen(false);
-    //         }
-    //     };
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setOpen(false);
+            }
+        };
 
-    //     document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("mousedown", handleClickOutside);
 
-    //     return () => {
-    //         document.removeEventListener("mousedown", handleClickOutside);
-    //     };
-    // }, []);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     useEffect(() => {
             if (open) {
@@ -82,7 +82,12 @@ const ChannelMenu = ({ channel, reloadChannels }) => {
     if (!activeWorkspace) return null;
 
     return (
-        <div ref={menuRef} className="relative">
+        <div ref={menuRef} className="relative" onMouseLeave={() => {
+            if (menuRef.current && !menuRef.current.contains(document.activeElement)) {
+                setOpen(false);
+            }
+        }}
+        >
 
             <button
                 onClick={(e) => {

@@ -30,7 +30,7 @@ const ChannelList = () => {
     if (!activeWorkspace) return null;
 
     return (
-        <div className="min-h-[120px] truncate min-w-0">
+        <div className="min-h-[120px] h-full truncate min-w-0">
             <h3 className="text-xs uppercase text-gray-400 mb-2">Channels</h3>
 
             <div className="space-y-1">

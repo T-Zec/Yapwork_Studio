@@ -19,9 +19,7 @@ const WorkspaceMenu = ({ workspace }) => {
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [deleting, setDeleting] = useState(false);
 
-    const isOwner = activeWorkspace?.created_by === user?.id;
-
-    if (!activeWorkspace) return null;
+    const isOwner = activeWorkspace?.created_by === user?.id;    
 
     const handleRename = async () => {
         if (!name.trim()) return;
@@ -92,6 +90,8 @@ const WorkspaceMenu = ({ workspace }) => {
             setName(activeWorkspace?.name || "");
         }
     }, [open, activeWorkspace]);
+
+    if (!activeWorkspace) return null;
 
     return (
         <div ref={menuRef} className="relative">

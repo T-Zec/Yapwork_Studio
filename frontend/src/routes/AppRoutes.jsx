@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
 import WorkspaceHome from "../pages/workspace/WorkspaceHome";
@@ -14,7 +14,7 @@ export default function AppRoutes() {
         <Routes>
             
             {/* Public Routes */}
-            <Route path="/" element={<ProtectedRoute />} />
+            <Route path="/" element={<Navigate to="/dashboard" />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
