@@ -30,7 +30,7 @@ const ChannelList = () => {
     if (!activeWorkspace) return null;
 
     return (
-        <div className="min-h-[120px] truncate min-w-0">
+        <div className="min-h-[120px] h-full truncate min-w-0">
             <h3 className="text-xs uppercase text-gray-400 mb-2">Channels</h3>
 
             <div className="space-y-1">
@@ -57,7 +57,7 @@ const ChannelList = () => {
                         <div
                             key={channel.id}
                             onClick={() => openChannel(channel.id)}
-                            className={`group flex flex-shrink-0 items-center justify-between px-2 py-1 rounded cursor-pointer text-sm
+                            className={`group flex items-center justify-between px-2 py-1 rounded cursor-pointer text-sm
                                     ${
                                         Number(channelId) === channel.id
                                             ? "bg-gray-700" : "hover:bg-gray-700"
