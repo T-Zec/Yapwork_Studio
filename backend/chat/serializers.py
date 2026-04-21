@@ -5,6 +5,7 @@ from users.serializers import UserSerializer
 
 class MessageSerializer(serializers.ModelSerializer):
     sender = UserSerializer(read_only=True)
+    attachment = serializers.FileField(required=False)
     
     def validate(self, attrs):
         content = attrs.get("content")
