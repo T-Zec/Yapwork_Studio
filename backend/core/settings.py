@@ -109,7 +109,7 @@ CLOUDINARY_STORAGE = {
     "CLOUD_NAME": os.getenv("CLOUDINARY_CLOUD_NAME"),
     "API_KEY": os.getenv("CLOUDINARY_API_KEY"),
     "API_SECRET": os.getenv("CLOUDINARY_API_SECRET"),
-    "DEFAULT_RESOURCES_TYPE": "auto",
+    "DEFAULT_RESOURCE_TYPE": "auto",
     "USE_FILENAME": True,
     "UNIQUE_FILENAME": False,
 }
