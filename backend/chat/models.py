@@ -2,11 +2,12 @@ from django.db import models
 from django.conf import settings
 from channels.models import Channel
 from django.core.validators import FileExtensionValidator
+import os
 from uuid import uuid4
 
 def upload_to(instance, filename):
-    ext = filename.split(".")[-1].lower()
-    return f"message_attachments/{uuid4()}.{ext}"
+    _, ext = os.path.splitext(filename)
+    return f"message_attachments/{uuid4()}.{ext.lower()}"
 
 class Message(models.Model):    
 

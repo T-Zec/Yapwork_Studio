@@ -25,16 +25,16 @@ class MessageSerializer(serializers.ModelSerializer):
             "updated_at",
         )
 
-        def validate(self, attrs):
-            content = (attrs.get("content") or "").strip()
-            attachment = attrs.get("attachment")
+    def validate(self, attrs):
+        content = (attrs.get("content") or "").strip()
+        attachment = attrs.get("attachment")
 
-            if not content and not attachment:
-                raise serializers.ValidationError("Message must contain text or attachment.")
+        if not content and not attachment:
+            raise serializers.ValidationError("Message must contain text or attachment.")
+        
+        if attachment and hasattr(attachment, 'size'):
+            if attachment.size > 5 * 1024 * 1024: # 5MB Limit
+                raise serializers.ValidationError("File size must be under 5MB.")
             
-            if attachment and hasattr(attachment, 'size'):
-                if attachment.size > 5 * 1024 * 1024: # 5MB Limit
-                    raise serializers.ValidationError("File size must be under 5MB.")
-                
-            attrs["content"] = content
-            return attrs
+        attrs["content"] = content
+        return attrs
