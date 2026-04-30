@@ -35,6 +35,8 @@ const MessageInput = ({ setMessages }) => {
             
         } catch (error) {
             console.error("Failed to send message", error);
+            console.log("Error response data", error.response?.data);
+            console.log("Error response status", error.response?.status);
         }
     };
 

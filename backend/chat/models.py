@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
 from channels.models import Channel
-from cloudinary_storage.storage import RawMediaCloudinaryStorage
 from django.core.validators import FileExtensionValidator
 
 
@@ -23,7 +22,6 @@ class Message(models.Model):
     content = models.TextField(blank=True)    
     attachment = models.FileField(
         upload_to=upload_to,
-        storage=RawMediaCloudinaryStorage(),
         validators=[
             FileExtensionValidator(
                 allowed_extensions=["jpg", "jpeg", "png", "webp", "pdf", "docx", "xlsx", "txt"]
