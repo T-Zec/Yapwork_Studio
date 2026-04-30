@@ -16,6 +16,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='message',
             name='attachment',
-            field=models.FileField(blank=True, null=True, storage=cloudinary_storage.storage.MediaCloudinaryStorage(resource_type='auto'), upload_to=chat.models.Message.upload_to, validators=[django.core.validators.FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'pdf', 'docx', 'xlsx', 'txt'])]),
+            field=models.FileField(blank=True, null=True, storage=cloudinary_storage.storage.MediaCloudinaryStorage(resource_type='auto'), upload_to=chat.models.upload_to, validators=[django.core.validators.FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'pdf', 'docx', 'xlsx', 'txt'])]),
         ),
     ]
