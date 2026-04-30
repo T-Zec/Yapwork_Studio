@@ -18,7 +18,7 @@ const MessageInput = ({ setMessages }) => {
         try {
             const formData = new FormData();
 
-            if (content) formData.append("content", content);
+            if (content.trim()) formData.append("content", content.trim());
             if (file) formData.append("attachment", file);
 
             const newMessage = await sendMessage(

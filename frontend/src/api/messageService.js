@@ -6,13 +6,13 @@ export const fetchMessages = async (workspaceId, channelId, page = 1) => {
 };
 
 export const sendMessage = async (workspaceId, channelId, data) => {
-    const response = await axiosInstance.post(`/workspaces/${workspaceId}/channels/${channelId}/messages/`, data, 
-        {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        }
-    );
+    const response = await axiosInstance.post(`/workspaces/${workspaceId}/channels/${channelId}/messages/`, data);
+    // {
+    //     headers: {
+    //         "Content-Type": "multipart/form-data",
+    //     },
+    // }
+
     return response.data;
 };
 

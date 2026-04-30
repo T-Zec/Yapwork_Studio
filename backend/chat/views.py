@@ -1,6 +1,7 @@
 from rest_framework import viewsets, permissions
 from rest_framework.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
+from rest_framework.parsers import MultiPartParser, FormParser
 
 from workspaces.models import WorkspaceMember
 from channels.models import Channel
@@ -11,6 +12,7 @@ from .serializers import MessageSerializer
 class MessageViewSet(viewsets.ModelViewSet):
     serializer_class = MessageSerializer
     permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
 
     def get_channel(self):
         workspace_id = self.kwargs.get("workspace_id")
