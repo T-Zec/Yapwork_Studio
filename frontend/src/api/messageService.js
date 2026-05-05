@@ -17,7 +17,11 @@ export const sendMessage = async (workspaceId, channelId, data) => {
 };
 
 export const editMessage = async (workspaceId, channelId, messageId, data) => {
-    const response = await axiosInstance.patch(`/workspaces/${workspaceId}/channels/${channelId}/messages/${messageId}/`, data);
+    const response = await axiosInstance.patch(`/workspaces/${workspaceId}/channels/${channelId}/messages/${messageId}/`, data, {
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
     return response.data;
 };
 
