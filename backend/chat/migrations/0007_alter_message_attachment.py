@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='message',
             name='attachment',
-            field=models.FileField(blank=True, null=True, storage=cloudinary_storage.storage.MediaCloudinaryStorage(resource_type='auto'), upload_to='message_attachments/'),
+            field=models.FileField(blank=True, null=True, upload_to='message_attachments/'),
         ),
     ]
